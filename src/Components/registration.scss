@@ -1,0 +1,143 @@
+.mainContainer {
+    background-color: #fff;
+    border: 1px solid #dadce0;
+    margin: 50px auto;
+    align-items: center;
+    height: 500px;
+    max-width: 750px;
+    border-radius: 8px;
+    display: block,
+  }
+  .bodyContainer{
+      padding: 48px 40px 36px;
+      display: flex;
+      flex-grow: 1;
+      box-sizing: border-box;
+      overflow: hidden;
+  }
+  .registrationContainer{
+    flex-basis: 450px;
+    margin: 0 -48px;
+    overflow: hidden;
+    padding: 0 48px;
+  }
+  .fundoofont {
+	display: flex;
+	font-size: 25px;
+	font-weight: 500;
+	justify-content: flex-start;
+}
+.f {
+	color: #4285F4;
+}
+.u {
+	color: #DB4437;
+}
+.n {
+	color: #F4B400;
+}
+.d {
+	color: #4285F4;
+}
+.o {
+	color: #0F9D58;
+}
+.oo {
+	color: #DB4437;
+}
+
+.p1{
+    display: flex;
+	font-size: 20px;
+	font-weight: 400;
+    justify-content: flex-start;
+    line-height: 80%;
+}
+.text1{
+    display: flex;
+    flex-direction: row;
+   
+}
+.textRow2{
+    margin-left: 25px;
+}
+.text{
+    display: flex;
+    flex-direction: column;
+}
+.textColumn2{
+    padding-top: 20px;
+}
+.text3{
+    display: flex;
+    flex-direction: row;
+    padding-top: 20px;
+}
+.button{
+    display: flex;
+    flex-direction: row;
+    padding-top: 20px;
+    justify-content: space-between;
+}
+.textColumn2{
+    width: 100%;
+}
+.passwordHint{
+    opacity: 0.6;
+    font-size: 14px;
+    padding-left:10px ;
+}
+::-webkit-textfield-decoration-container[type="email"]::placeholder {  
+                  
+    /* Firefox, Chrome, Opera */ 
+    text-align: right; 
+} 
+.figure{
+   
+}
+img {
+    width: 244px;
+    height: 244px;
+}
+.figCaption{
+font-size: 16px;
+font-weight: 300;
+text-align: center;
+
+}
+.figureBox{
+    padding-left: 48px;
+}
+.image{
+    margin: 72px 4px 0;
+    text-align: center;
+}
+
+@media only screen and (max-width: 500px) {
+    .mainContainer{
+        border:none;
+        margin: 50px auto;
+        
+    }
+    .sideImageBox{
+        display: none;
+    }
+    .fundoofont {
+        justify-content: center;
+
+    }
+    .p1{
+        justify-content: center;
+    }
+    .textFieldBody{
+        flex-wrap: wrap;
+    }
+    // .text1{
+    //         display: flex;
+    //         flex-wrap: wrap;
+    // }
+    // .textRow2{
+    //     margin-left: 0px;
+    //     padding-top: 20px;
+    // }
+}
