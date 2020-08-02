@@ -10,7 +10,7 @@ export default class ForgotPassword extends React.Component {
             <div className="smainContainer ">
                 <div className="sloginContainer">
                     <div className="registrationContainer">
-                        <div className="fundoofont" >
+                        <div className="fundoofont1"  align="center">
                             <span class="f">F</span>
                             <span class="u">u</span>
                             <span class="n">n</span>
@@ -25,7 +25,7 @@ export default class ForgotPassword extends React.Component {
                             </Typography>
                             </p>
                         </div>
-                        <div className="textFieldBody">
+                        <div className="heading"  align="center">
                             <p className="p2">Recover your Fundoo Account</p> <br />
                         </div>
                         <div className="textField1">
