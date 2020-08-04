@@ -9,6 +9,14 @@ export default class Registration extends React.Component {
         return (
             <div className="smainContainer ">
                 <div className="sloginContainer">
+                <div className="fundoofont1"  align="center">
+                            <span class="f">F</span>
+                            <span class="u">u</span>
+                            <span class="n">n</span>
+                            <span class="d">d</span>
+                            <span class="o">o</span>
+                            <span class="oo">o</span>
+                        </div>
                     <div>
                         <p class="title" align="center">
                             <Typography component="h1" variant="h5">
@@ -28,7 +36,7 @@ export default class Registration extends React.Component {
                             helperText="Use EmailID or Mobile Number"
                             required
                             placeholder="@gmail.com"
-                            text-align="right"
+                            
                         />
                     </div>
                     <div className="textField1">
@@ -42,8 +50,7 @@ export default class Registration extends React.Component {
                             size="small"
                             helperText="Use 8 or more characters with a mix of letters, numbers & symbols"
                             required
-                            placeholder="@gmail.com"
-                            text-align="right"
+                            
                         />
                     </div>
 
