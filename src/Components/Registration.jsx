@@ -4,15 +4,14 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import logo from "../assetes/logoRegister.svg";
 
-const validEmailRegex = RegExp(
-    /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
-);
-const validateForm = errors => {
+const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
+const validateForm = (errors) => {
     let valid = true;
-    Object.values(errors).forEach(val => val.length > 0 && (valid = false));
+    Object.values(errors).forEach(
+        (val) => val.length > 0 && (valid = false)
+    );
     return valid;
-};
-
+}
 
 export default class Registration extends React.Component {
 
@@ -20,16 +19,17 @@ export default class Registration extends React.Component {
         super(props);
         this.state = {
             firstName: null,
-            lastName:null,
+            lastName: null,
             email: null,
             password: null,
-            confirmPassword:null,
+            confirmPassword: null,
             errors: {
+
                 firstName: '',
-                lastName:'',
+                lastName: '',
                 email: '',
                 password: '',
-                confirmPassword:'',
+                confirmPassword: '',
             }
         };
     }
@@ -41,15 +41,15 @@ export default class Registration extends React.Component {
 
         switch (name) {
             case 'firstName':
-                errors.fullName =
+                errors.firstName =
                     value.length < 5
-                        ? 'First name is not valid'
+                        ? 'must be 5 characters long!'
                         : '';
                 break;
-            case 'lasttName':
+            case 'lastName':
                 errors.lastName =
                     value.length < 5
-                        ? 'Last name is not valid'
+                        ? 'must be 5 characters long!'
                         : '';
                 break;
             case 'email':
@@ -61,13 +61,13 @@ export default class Registration extends React.Component {
             case 'password':
                 errors.password =
                     value.length < 8
-                        ? 'Password is not valid'
+                        ? 'must be 8 characters long!'
                         : '';
                 break;
             case 'confirmPassword':
                 errors.confirmPassword =
                     value.length < 8
-                        ? 'Password is not valid'
+                        ? 'must be 8 characters long!'
                         : '';
                 break;
             default:
@@ -100,43 +100,42 @@ export default class Registration extends React.Component {
                             <span class="o">o</span>
                             <span class="oo">o</span>
                         </div>
-                        <form onSubmit={this.handleSubmit} noValidate>
-                            <div className="textFieldBody">
-                                <p className="p1">Create your Fundoo Account</p> <br />
+
+                        <div className="textFieldBody">
+                            <p className="p1">Create your Fundoo Account</p> <br />
+                            <form onSubmit={this.handleSubmit} noValidate>
                                 <div className="text">
                                     <div className="text1">
                                         <div className="textRow1">
                                             <TextField
-                                                name="First name"
+                                                name="firstName"
                                                 label="First name"
                                                 id="outlined-size-small"
                                                 variant="outlined"
                                                 size="small"
                                                 required
-                                                onChange={this.handleChange}
-                                            />
-                                            {errors.firstName.length > 0 &&
-                                                <span className='error'>{errors.firstName}</span>}
+                                                onChange={this.handleChange} noValidate />
+              {errors.firstName.length > 0 && 
+                <span className='error'>{errors.firstName}</span>}
                                         </div>
                                         <div className="textRow2">
                                             <TextField
-                                                name="Last name"
+                                                name="lastName"
                                                 label="Last name"
                                                 id="outlined-size-small"
                                                 variant="outlined"
                                                 size="small"
                                                 required
-                                                onChange={this.handleChange}
-                                            />
-                                            {errors.lastName.length > 0 &&
-                                                <span className='error'>{errors.lastName}</span>}
+                                                onChange={this.handleChange} noValidate />
+                                                {errors.lastName.length > 0 && 
+                                                  <span className='error'>{errors.lastName}</span>}
                                         </div>
                                     </div>
                                     <div className="textColumn2">
                                         <TextField
                                             fullWidth
                                             type="email"
-                                            name="Username"
+                                            name="email"
                                             label="Username"
                                             id="outlined-size-small"
                                             variant="outlined"
@@ -145,14 +144,14 @@ export default class Registration extends React.Component {
                                             required
                                             placeholder="@gmail.com"
                                             text-align="right"
-                                            onChange={this.handleChange}
-                                        />
-                                        {errors.email.length > 0 &&
-                                            <span className='error'>{errors.email}</span>}
+                                            onChange={this.handleChange} noValidate />
+                                            {errors.email.length > 0 && 
+                                              <span className='error'>{errors.email}</span>}
                                     </div>
                                     <div className="text3">
                                         <div className="textRow1">
                                             <TextField
+                                            name="password"
                                                 label="Password"
                                                 type="password"
                                                 id="outlined-size-small"
@@ -166,6 +165,7 @@ export default class Registration extends React.Component {
                                         </div>
                                         <div className="textRow2">
                                             <TextField
+                                             name="confirmPassword"
                                                 label="Confirm"
                                                 type="password"
                                                 id="outlined-size-small"
@@ -193,8 +193,9 @@ export default class Registration extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
+
                     </div>
 
                     <div className="sideImageBox">
