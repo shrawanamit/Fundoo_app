@@ -3,7 +3,11 @@ import "./signIn.scss";
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-
+import Link from '@material-ui/core/Link';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import FundooService from "../Services/userService";
+let service = new FundooService();
 
 
 const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
@@ -21,20 +25,29 @@ export default class Registration extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fullName: null,
+           
             email: null,
             password: null,
+            SnackbarOpen: false,
+            SnackbarMessage: '',
             errors: {
-                //fullName: '',
+                
                 email: '',
                 password: '',
             }
         };
     }
 
+    SnackbarClose = (event) => {
+        this.setState({ SnackbarOpen: false });
+    }
+
     handleChange = (event) => {
         event.preventDefault();
         const { name, value } = event.target;
+        this.setState({
+            [event.target.name]: event.target.value,
+          });
         let errors = this.state.errors;
 
         switch (name) {
@@ -66,6 +79,24 @@ export default class Registration extends React.Component {
             console.error('Invalid Form')
         }
     }
+    submitUserSignInForm = () => {
+        const user = {
+           
+            email: this.state.email,
+            password: this.state.password,
+           
+          };
+          service. Login(user)
+            .then((json) => {
+              console.log("responce data==>", json);
+              if (json.status === 200) {
+                this.setState({ SnackbarOpen: true, SnackbarMessage: 'Login Sucessfull !!' })
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+    };
 
 
 
@@ -76,6 +107,17 @@ export default class Registration extends React.Component {
         const { errors } = this.state;
         return (
             <div className="smainContainer ">
+                <Snackbar
+                anchorOrigin={{ vertical: 'center', horizontal: 'center' }}
+                open={this.state.SnackbarOpen}
+                autoHideDuration={3000}
+                onClose={this.SnackbarClose}
+                message={<span id="message-id">{this.state.SnackbarMessage}</span>}
+                action={[
+                    <IconButton key="close" aria-label="close"
+                        color="inherit" onClick={this.SnackbarClose}>x</IconButton>
+                ]}
+            />
                 <div className="sloginContainer">
                     <div className="fundoofont1" align="center">
                         <span class="f">F</span>
@@ -128,12 +170,15 @@ export default class Registration extends React.Component {
 
                         <div className="buttonContainer">
                             <div className="btn1">
+                            <Link href="/"  variant="body2">
                                 <Button color="primary">Create account</Button>
+                                </Link>
                             </div>
                             <div className="btn2">
                                 <Button
                                     variant="contained"
                                     color="primary"
+                                    onClick={this.submitUserSignInForm}
                                     className="btn">
                                     Sign in
                             </Button>

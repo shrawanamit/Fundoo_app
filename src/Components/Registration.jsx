@@ -1,17 +1,27 @@
 import React from 'react';
 import "./registration.scss";
+import Link from '@material-ui/core/Link';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import logo from "../assetes/logoRegister.svg";
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import FundooService from "../Services/userService";
+let service = new FundooService();
+
+
 
 const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
-const validateForm = (errors) => {
+
+const  validateForm = (errors) => {
     let valid = true;
     Object.values(errors).forEach(
         (val) => val.length > 0 && (valid = false)
     );
     return valid;
 }
+
+
 
 export default class Registration extends React.Component {
 
@@ -23,6 +33,8 @@ export default class Registration extends React.Component {
             email: null,
             password: null,
             confirmPassword: null,
+            SnackbarOpen: false,
+            SnackbarMessage: '',
             errors: {
 
                 firstName: '',
@@ -34,62 +46,121 @@ export default class Registration extends React.Component {
         };
     }
 
+    SnackbarClose = (event) => {
+        this.setState({ SnackbarOpen: false });
+    }
+
     handleChange = (event) => {
         event.preventDefault();
         const { name, value } = event.target;
         let errors = this.state.errors;
+        this.setState({
+            [event.target.name]: event.target.value,
+        });
+        let formIsValid = true;
 
         switch (name) {
             case 'firstName':
                 errors.firstName =
-                    value.length < 5
+                    value.length < 3
                         ? 'must be 5 characters long!'
                         : '';
+                formIsValid = false;
                 break;
             case 'lastName':
                 errors.lastName =
-                    value.length < 5
+                    value.length < 3
                         ? 'must be 5 characters long!'
                         : '';
+                formIsValid = false;
                 break;
             case 'email':
                 errors.email =
                     validEmailRegex.test(value)
                         ? ''
                         : 'Email is not valid!';
+                formIsValid = false;
                 break;
             case 'password':
                 errors.password =
                     value.length < 8
                         ? 'must be 8 characters long!'
                         : '';
+                formIsValid = false;
                 break;
             case 'confirmPassword':
                 errors.confirmPassword =
                     value.length < 8
                         ? 'must be 8 characters long!'
                         : '';
+                formIsValid = false;
                 break;
             default:
                 break;
         }
 
         this.setState({ errors, [name]: value });
+        return formIsValid;
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
-        if (validateForm(this.state.errors)) {
+        // if (validateForm(this.state.errors)) {
+        if (this.handleChange()) {
             console.info('Valid Form')
         } else {
             console.error('Invalid Form')
         }
     }
 
+    
+    submitUserSignInForm = () => {
+        const user = {
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            email: this.state.email,
+            password: this.state.password,
+            service: "advance"
+        };
+        if( this.state.password == this.state.confirmPassword)
+        {
+            service.Registration(user)
+            .then((json) => {
+                console.log("responce data==>", json);
+                if (json.status === 200) {
+                    this.setState({ SnackbarOpen: true, SnackbarMessage: 'Registration Sucessfull !!' })
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        
+        }
+        else{
+            this.setState({ SnackbarOpen: true, SnackbarMessage: 'password not match !!' })
+        }
+        
+    };
+
+
+
     render() {
         const { errors } = this.state;
         return (
+
+           
             <div className="mainContainer ">
+                 <Snackbar
+                anchorOrigin={{ vertical: 'center', horizontal: 'center' }}
+                open={this.state.SnackbarOpen}
+                autoHideDuration={3000}
+                onClose={this.SnackbarClose}
+                message={<span id="message-id">{this.state.SnackbarMessage}</span>}
+                action={[
+                    <IconButton key="close" aria-label="close"
+                        color="inherit" onClick={this.SnackbarClose}>x</IconButton>
+                ]}
+            />
                 <div className="bodyContainer">
                     <div className="registrationContainer">
                         <div className="fundoofont" >
@@ -108,27 +179,32 @@ export default class Registration extends React.Component {
                                     <div className="text1">
                                         <div className="textRow1">
                                             <TextField
+                                                fullWidth
+                                                type="text"
                                                 name="firstName"
                                                 label="First name"
                                                 id="outlined-size-small"
                                                 variant="outlined"
                                                 size="small"
                                                 required
+                                                defaultValue={this.state.firstName}
                                                 onChange={this.handleChange} noValidate />
-              {errors.firstName.length > 0 && 
-                <span className='error'>{errors.firstName}</span>}
+                                            {errors.firstName.length > 0 &&
+                                                <span className='error'>{errors.firstName}</span>}
                                         </div>
                                         <div className="textRow2">
                                             <TextField
+                                                fullWidth
                                                 name="lastName"
                                                 label="Last name"
                                                 id="outlined-size-small"
                                                 variant="outlined"
                                                 size="small"
                                                 required
+                                                defaultValue={this.state.lastName}
                                                 onChange={this.handleChange} noValidate />
-                                                {errors.lastName.length > 0 && 
-                                                  <span className='error'>{errors.lastName}</span>}
+                                            {errors.lastName.length > 0 &&
+                                                <span className='error'>{errors.lastName}</span>}
                                         </div>
                                     </div>
                                     <div className="textColumn2">
@@ -144,20 +220,23 @@ export default class Registration extends React.Component {
                                             required
                                             placeholder="@gmail.com"
                                             text-align="right"
+                                            defaultValue={this.state.email}
                                             onChange={this.handleChange} noValidate />
-                                            {errors.email.length > 0 && 
-                                              <span className='error'>{errors.email}</span>}
+                                        {errors.email.length > 0 &&
+                                            <span className='error'>{errors.email}</span>}
                                     </div>
                                     <div className="text3">
                                         <div className="textRow1">
                                             <TextField
-                                            name="password"
+                                                fullWidth
+                                                name="password"
                                                 label="Password"
                                                 type="password"
                                                 id="outlined-size-small"
                                                 variant="outlined"
                                                 size="small"
                                                 required
+                                                defaultValue={this.state.password}
                                                 onChange={this.handleChange}
                                             />
                                             {errors.password.length > 0 &&
@@ -165,13 +244,15 @@ export default class Registration extends React.Component {
                                         </div>
                                         <div className="textRow2">
                                             <TextField
-                                             name="confirmPassword"
+                                                fullWidth
+                                                name="confirmPassword"
                                                 label="Confirm"
                                                 type="password"
                                                 id="outlined-size-small"
                                                 variant="outlined"
                                                 size="small"
                                                 required
+                                                defaultValue={this.state.confirmPassword}
                                                 onChange={this.handleChange}
                                             />
                                             {errors.confirmPassword.length > 0 &&
@@ -183,11 +264,13 @@ export default class Registration extends React.Component {
 
 
                                         <div className="button1">
-                                            <Button color="primary">sign in Insted</Button>
+                                            <Link href="/signin" variant="body2">
+                                                <Button color="primary">sign in Insted</Button>
+                                            </Link>
                                         </div>
 
                                         <div className="button2">
-                                            <Button variant="contained" color="primary">
+                                            <Button variant="contained" color="primary" onClick={this.submitUserSignInForm}>
                                                 Register
                                         </Button>
                                         </div>

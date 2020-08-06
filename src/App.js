@@ -5,7 +5,7 @@ import ForgotPassword from './Components/ForgotPassword';
 import ResetPassword from './Components/ResetPassword';
 import SighIn from './Components/SighIn';
 import DashBord from './Components/DashBoard';
-
+import Form from './Components/Form';
 
 function App() {
   return (
@@ -14,8 +14,9 @@ function App() {
       <Route exact path="/" component={ Registration} />
       <Route exact path="/signin" component={ SighIn} />
       <Route exact path="/forgotPassoword" component={ForgotPassword} />
-      <Route exact path="/resetPassoword" component={ResetPassword} />
+      <Route exact path="/resetpassword/:token" component={ResetPassword} />
       <Route exact path="/dashBord" component={DashBord} />
+      <Route exact path="/form" component={Form} />
     </Router>
   </div>
   );

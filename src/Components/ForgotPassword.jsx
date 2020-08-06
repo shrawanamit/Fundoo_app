@@ -3,6 +3,10 @@ import "./forgotPassword.scss";
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import FundooService from "../Services/userService";
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+let service = new FundooService();
 
 const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
 const validateForm = (errors) => {
@@ -20,20 +24,28 @@ export default class ForgotPassword extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          fullName: null,
+         
           email: null,
-          password: null,
+          SnackbarOpen: false,
+          SnackbarMessage: '',
+         
           errors: {
-            fullName: '',
+            
             email: '',
-            password: '',
+            
           }
         };
       }
     
+      SnackbarClose = (event) => {
+        this.setState({ SnackbarOpen: false });
+    }
       handleChange = (event) => {
         event.preventDefault();
         const { name, value } = event.target;
+        this.setState({
+            [event.target.name]: event.target.value,
+          });
         let errors = this.state.errors;
     
         switch (name) {
@@ -59,12 +71,39 @@ export default class ForgotPassword extends React.Component {
           console.error('Invalid Form')
         }
       }
+
+      submitUserSignInForm = () => {
+        const user = {
+            email: this.state.email,
+          };
+          service.ForgotPassword(user)
+            .then((json) => {
+              console.log("responce data==>", json);
+              if (json.status === 200) {
+                this.setState({ SnackbarOpen: true, SnackbarMessage: 'check your EMAIL !!' })
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+    };
     
 
     render() {
         const {errors} = this.state;
         return (
             <div className="smainContainer ">
+              <Snackbar
+                anchorOrigin={{ vertical: 'center', horizontal: 'center' }}
+                open={this.state.SnackbarOpen}
+                autoHideDuration={3000}
+                onClose={this.SnackbarClose}
+                message={<span id="message-id">{this.state.SnackbarMessage}</span>}
+                action={[
+                    <IconButton key="close" aria-label="close"
+                        color="inherit" onClick={this.SnackbarClose}>x</IconButton>
+                ]}
+            />
                 <div className="sloginContainer">
                     <div className="registrationContainer">
                     <form onSubmit={this.handleSubmit} noValidate>
@@ -110,8 +149,9 @@ export default class ForgotPassword extends React.Component {
                                 <Button
                                     variant="contained"
                                     color="primary"
+                                    onClick={this.submitUserSignInForm }
                                     className="btn">
-                                    Sign in
+                                    enter
                             </Button>
                             </div>
                         </div>

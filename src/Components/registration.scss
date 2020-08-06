@@ -116,7 +116,7 @@ text-align: center;
 @media only screen and (max-width: 500px) {
     .mainContainer{
         border:none;
-        margin: 50px auto;
+        margin: 0px auto;
         
     }
     .sideImageBox{
@@ -132,12 +132,25 @@ text-align: center;
     .textFieldBody{
         flex-wrap: wrap;
     }
-    // .text1{
-    //         display: flex;
-    //         flex-wrap: wrap;
-    // }
-    // .textRow2{
-    //     margin-left: 0px;
-    //     padding-top: 20px;
-    // }
+    .text1{
+            display: flex;
+            flex-wrap: wrap;
+    }
+    .textRow2{
+        margin-left: 0px;
+        padding-top: 20px;
+    }
+    .text3{
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .bodyContainer{
+        padding: 5px 10px 10px;
+    }
+    .textRow1{
+        width:100%;
+    }
+    .textRow2{
+        width:100%;
+    }
 }

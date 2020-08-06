@@ -3,6 +3,8 @@ import "./resetPassword.scss";
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import FundooService from "../Services/userService";
+let service = new FundooService();
 
 
 const validateForm = (errors) => {
@@ -30,6 +32,9 @@ export default class ResetPassword extends React.Component {
     handleChange = (event) => {
         event.preventDefault();
         const { name, value } = event.target;
+        this.setState({
+            [event.target.name]: event.target.value,
+          });
         let errors = this.state.errors;
 
         switch (name) {
@@ -61,6 +66,25 @@ export default class ResetPassword extends React.Component {
             console.error('Invalid Form')
         }
     }
+
+    submitUserSignInForm = () => {
+        const user = {
+           
+            confirmPassword: this.state.confirmPassword,
+            password: this.state.password,
+           
+          };
+          service.Resetpassword(user)
+            .then((json) => {
+              console.log("responce data==>", json);
+              if (json.status === 200) {
+                alert("Reset password Sucessfull !!");
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+    };
 
     render() {
         const { errors } = this.state;
@@ -124,7 +148,8 @@ export default class ResetPassword extends React.Component {
                                 <Button
                                     variant="contained"
                                     color="primary"
-                                    className="btn">
+                                    className="btn"
+                                    onClick={this.submitUserSignInForm}>
                                     Reset Password
                             </Button>
                             </div>
