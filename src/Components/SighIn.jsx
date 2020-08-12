@@ -88,7 +88,9 @@ export default class Registration extends React.Component {
           };
           service. Login(user)
             .then((json) => {
-              console.log("responce data==>", json);
+              console.log("responce data==>", json.data.id);
+              //taking token Id of user
+              localStorage.setItem('token', json.data.id);
               if (json.status === 200) {
                 this.setState({ SnackbarOpen: true, SnackbarMessage: 'Login Sucessfull !!' })
               }

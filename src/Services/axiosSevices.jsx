@@ -5,8 +5,8 @@ export default class AxiosService{
         return axios.post(url,data,isHeaderRequired);
     }
 
-    Get(url,data,isHeaderRequired){
-        return axios.get(url,data,isHeaderRequired);
+    Get(url,isHeaderRequired){
+        return axios.get(url,isHeaderRequired);
     }
     
 }

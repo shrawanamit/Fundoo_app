@@ -1,0 +1,82 @@
+.getNotes{
+    
+    width: 100%;
+}
+.titleHidden{
+    
+    display: flex;
+    flex-direction: row;
+}
+
+.displayNote{
+    width: 240px;
+    min-height:104px ;
+    display: flex;
+    margin: 16px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border: 1px solid grayscale($color: #979797);
+    border-radius: 8px;
+    .getIcons{
+        display: none;
+    }
+    .pinIcons{
+        display: none;
+    }
+
+}
+
+.getAllNote{
+    &:hover {
+        
+        .getIcons{
+            display: block;
+        }
+        .pinIcons{
+            display: flex;
+            
+
+        }
+        .getNotes{
+            border: 1px solid transparent;
+             border-radius: 8px;
+            box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302), 0 2px 6px 2px rgba(60,64,67,0.149);
+        }
+      }
+}
+.pinIcons{
+    &:hover {
+        border: 1px solid transparent;
+            border-radius: 50%;
+            background-color: rgb(230, 228, 228);
+            align-items: center;
+            align-content: center;
+            opacity: 0.99;
+    }
+}
+
+.pinImage{
+    width: 22px;
+    height: 22px;
+    opacity: 0.71;
+    padding-right: 8px;
+    padding-top: 8px;
+}
+.pinIcons{
+    
+   
+    display: flex;
+     justify-content: space-between;
+  
+}
+.displayTitle{
+    width: 90%;
+    min-height: 22px;
+    padding: 8px 8px 4px 8px
+}
+.discreptionHidden{
+    width: 95%;
+    min-height: 22px;
+    padding: 2px 8px 4px 8px
+}
+
