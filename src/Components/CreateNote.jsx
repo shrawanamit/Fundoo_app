@@ -1,5 +1,6 @@
 import React from 'react';
 import "./createNote.scss";
+import DisplayNote from './DisplayNote.jsx';
 import Icons from './Icons.jsx';
 import InputBase from '@material-ui/core/InputBase';
 import Button from '@material-ui/core/Button';
@@ -51,12 +52,13 @@ export default class CreateNote extends React.Component {
         };
         const token = localStorage.getItem('token')
         services
-            .CreateNote(token, apiInputData)
+            .CreateNote(token,apiInputData)
             .then((json) => {
                 if (json.status === 200) {
                     this.setState({
                         SnackbarOpen: true, SnackbarMessage: 'note created Sucessfull !!',noteOpen: true
                     });
+                   
                 }
             })
             .catch((err) => {

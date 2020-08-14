@@ -1,9 +1,8 @@
 .mainBody{
-    padding-top: 64px;
-    padding-left: 280px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
+    flex-grow: 4;
 }
 
 .noteBody1{
@@ -83,3 +82,25 @@
 .noteIcon{
     opacity: 0.71;
 }
+.iconPart1{
+    opacity: 0.75;
+}
+@media only screen and (max-width: 500px) {
+    .getAllNote{ 
+     width: 295px;
+    }
+    .mainBody{
+        padding-left: 60px;
+    }
+    .noteBody{
+        width:295px;
+    }
+    .noteBody1{
+        width:295px;
+    }
+    .iconsBody {
+        padding: 8px 0px 8px 0px;
+    }
+   
+  }
+  

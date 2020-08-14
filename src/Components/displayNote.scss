@@ -1,23 +1,26 @@
-.getNotes{
-    
-    width: 100%;
+
+.displayAllNotes{
+    display: flex;
+    padding-top: 16px;
+    padding-left: 16px;
 }
-.titleHidden{
-    
+.displayNote{
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
 }
 
-.displayNote{
+.getNotes{
     width: 240px;
     min-height:104px ;
     display: flex;
-    margin: 16px;
-    flex-direction: row;
-    flex-wrap: wrap;
+    margin: 4px;
+    flex-direction:column;
     border: 1px solid grayscale($color: #979797);
     border-radius: 8px;
+   // position: relative;
     .getIcons{
+        //visibility: hidden;
         display: none;
     }
     .pinIcons{
@@ -26,23 +29,33 @@
 
 }
 
-.getAllNote{
+.getNotes{
     &:hover {
+        border: 1px solid transparent;
+        border-radius: 8px;
+        box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302), 0 2px 6px 2px rgba(60,64,67,0.149);
         
         .getIcons{
             display: block;
+            // position: absolute;
+            // bottom: 4px;
+            //visibility: visible;
+            
         }
         .pinIcons{
             display: flex;
-            
 
         }
-        .getNotes{
-            border: 1px solid transparent;
-             border-radius: 8px;
-            box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302), 0 2px 6px 2px rgba(60,64,67,0.149);
-        }
+        // .getNotes{
+        //     border: 1px solid transparent;
+        //     border-radius: 8px;
+        //     box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302), 0 2px 6px 2px rgba(60,64,67,0.149);
+        // }
       }
+}
+.titleHidden{
+    display: flex;
+    flex-direction: row;
 }
 .pinIcons{
     &:hover {
@@ -63,8 +76,6 @@
     padding-top: 8px;
 }
 .pinIcons{
-    
-   
     display: flex;
      justify-content: space-between;
   
@@ -72,11 +83,40 @@
 .displayTitle{
     width: 90%;
     min-height: 22px;
-    padding: 8px 8px 4px 8px
+    padding: 8px 8px 4px 8px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    word-wrap: break-word;
+    word-break: break-all;
+    font-size: 17px;
+    font-weight: 500;
+    opacity: 0.9;
+   
 }
 .discreptionHidden{
     width: 95%;
     min-height: 22px;
-    padding: 2px 8px 4px 8px
+    padding: 2px 8px 4px 8px;
+    word-break: break-all;
 }
 
+.dilogBody{
+   // margin:32px auto 16px auto ;
+   // position: relative;
+    width: 100%;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    min-height: 132px;
+    box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302), 0 2px 6px 2px rgba(60,64,67,0.149);
+    display: flex;
+    flex-direction: column;
+}
+@media only screen and (max-width: 500px) {
+    .getNotes{
+        width: 100%;
+    }
+     .dilogBody{
+        width:295px;
+    }
+}

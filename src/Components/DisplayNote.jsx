@@ -3,7 +3,15 @@ import "./displayNote.scss";
 import Icons from './Icons.jsx';
 import InputBase from '@material-ui/core/InputBase';
 import pintask from "../assetes/pintask.svg";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent'
+import { StylesProvider } from "@material-ui/core/styles";
 import NoteService from "../Services/NoteService";
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
+
 let services = new NoteService();
 
 
@@ -13,18 +21,62 @@ export default class DisplayNote extends React.Component {
         super(props);
         this.state = {
             History: [],
-
+            open: false,
+            id:'',
+            title:'',
+            discrreption:'',
+            SnackbarOpen: false,
+            SnackbarMessage: '',
         };
+    }
+
+    handleClickOpen = (cardObject) => {
+        this.setState({ open: true });
+        this.setState({ id: cardObject.id });
+        this.setState({ title:cardObject.title });
+        this.setState({ description: cardObject.description });
+      };
+      handleChangeText = (event) => {
+        this.setState({
+            [event.target.name]: event.target.value,
+        });
+    };
+
+    SnackbarClose = (event) => {
+        this.setState({ SnackbarOpen: false });
+    }
+      updateNote = () => {
+        
+        const apiUpdateedInputData = {
+            title: this.state.title,
+            description: this.state.description,
+            noteId:this.state.id,
+        };
+        const token = localStorage.getItem('token');
+        console.log(this.state.id);
+        services
+            .updateNote(apiUpdateedInputData,token)
+            .then((json) => {
+                if (json.status === 200) {
+                    this.setState({
+                        SnackbarOpen: true, SnackbarMessage: 'note update Sucessfull !!', open: false ,
+                    });
+                    this.getAllNote();
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 
     //for fetching  notes from database
     componentDidMount() {
-        this.history();
+        this.getAllNote();
     }
 
-    history = () => {
-        const token = localStorage.getItem('token')
-        console.log(token);
+     getAllNote = () => {
+         const token = localStorage.getItem('token')
+         console.log(token);
         services.getAllNotes(token).then((data) => {
             console.log(" All historyfound ", data.data.data);
             this.setState({ History: data.data.data.data });
@@ -37,12 +89,22 @@ export default class DisplayNote extends React.Component {
 
     render() {
         return (
-            <div className="displayNote">
-                {this.state.History.map((row) => (
-                    <div className="getNotes">
-                    
+            <div className="displayNote" >
+                 <Snackbar
+                    anchorOrigin={{ vertical: 'center', horizontal: 'center' }}
+                    open={this.state.SnackbarOpen}
+                    autoHideDuration={3000}
+                    onClose={this.SnackbarClose}
+                    message={<span id="message-id">{this.state.SnackbarMessage}</span>}
+                    action={[
+                        <IconButton key="close" aria-label="close"
+                            color="inherit" onClick={this.SnackbarClose}>x</IconButton>
+                    ]}
+                />
+                {this.state.History.reverse().map((row) => (
+                    <div className="getNotes"  >
                         <div className="titleHidden">
-                            <div className="displayTitle">
+                            <div className="displayTitle" onClick={()=>this.handleClickOpen(row)}>
                                 {row.title}
                             </div>
                             <div className="pinIcons">
@@ -53,10 +115,49 @@ export default class DisplayNote extends React.Component {
                             {row.description}
                         </div>
                         <div className="getIcons">
-                            <Icons />
+                            <Icons noteId={row}/>
                         </div>
                     </div >
                 ))}
+
+                <div className="dilogBox">
+                    <Dialog  open={this.state.open}
+                        onClose={this.handleClose} >
+                        <DialogContent>
+                            <div className="dilogBody">
+                                <div className="title">
+                                    <InputBase
+                                        placeholder="Title"
+                                        fullWidth
+                                        multiline
+                                        name="title"
+                                        value={this.state.title}
+                                        onChange={this.handleChangeText}
+                                    /></div>
+                                <div className="note1">
+                                    <InputBase
+                                        placeholder="Note"
+                                        fullWidth
+                                        multiline
+                                        name="description"
+                                        value={this.state.description}
+                                        onChange={this.handleChangeText}
+                                    />
+                                </div>
+                                <div className="iconsBody">
+                                <div className="iconDiv">
+                                    <div className="iconPart1">
+                                        <Icons />
+                                    </div>
+                                    <div className="iconPart2">
+                                        <Button onClick={this.updateNote}>update</Button>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </DialogContent>
+                    </Dialog>
+                </div>
             </div>
         );
     }

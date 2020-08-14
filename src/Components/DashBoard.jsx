@@ -13,6 +13,7 @@ import CreateNote from './CreateNote.jsx';
 import NoteService from "../Services/NoteService";
 import DisplayNote from "./DisplayNote.jsx";
 import "./dashboard.scss";
+import Logo from "../assetes/fundooLogo.png";
 import NoteOutlinedIcon from '@material-ui/icons/NoteOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import NotificationsNoneOutlinedIcon from '@material-ui/icons/NotificationsNoneOutlined';
@@ -34,7 +35,7 @@ export default class DashBord extends React.Component {
         };
     }
     handleDrawerOpen = (event) => {
-            this.setState({ open: !this.state.open });
+        this.setState({ open: !this.state.open });
     };
     render() {
         return (
@@ -49,6 +50,7 @@ export default class DashBord extends React.Component {
                                 </IconButton>
                             </div>
                             <div className="heading" >
+                                <img src={Logo} class="Logo" alt="Logo" />
                                 <Typography variant="h6" >
                                     Fundoo
                                 </Typography>
@@ -70,12 +72,12 @@ export default class DashBord extends React.Component {
                                         fullWidth
                                     />
                                 </div>
-                                <div className="clearIcon">
+                                {/* <div className="clearIcon">
                                     <IconButton edge="start" color="inherit" aria-label="menu">
                                         <ClearIcon />
                                     </IconButton>
 
-                                </div>
+                                </div> */}
                             </div>
 
                         </div>
@@ -93,60 +95,60 @@ export default class DashBord extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="drawer" >
-
-                    <div className={this.state.open ? "sideNav1" : "sideNav"} >
-
-                        <List aria-label="menu" edge="start">
-                            <div className="note">
-                                <ListItem button>
-                                    <ListItemIcon>
-                                        <NoteOutlinedIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Notes" />
-                                </ListItem>
-                            </div>
-                            <div className="note">
-                                <ListItem button>
-                                    <ListItemIcon>
-                                        <NotificationsNoneOutlinedIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Remainder" />
-                                </ListItem>
-                            </div>
-                            <div className="note">
-                                <ListItem button>
-                                    <ListItemIcon>
-                                        <EditOutlinedIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Edit Labels" />
-                                </ListItem>
-                            </div>
-                            <div className="note">
-                                <ListItem button>
-                                    <ListItemIcon>
-                                        < ArchiveIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Archive" />
-                                </ListItem>
-                            </div>
-                            <div className="note">
-                                <ListItem button>
-                                    <ListItemIcon >
-                                        < DeleteOutlineOutlinedIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Trash" />
-                                </ListItem>
-                            </div>
-                        </List>
+                <div className="bodyContener">
+                    <div className="drawer" >
+                        <div className={this.state.open ? "sideNav1" : "sideNav"} >
+                            <List aria-label="menu" edge="start">
+                                <div className="note">
+                                    <ListItem button>
+                                        <ListItemIcon>
+                                            <NoteOutlinedIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Notes" />
+                                    </ListItem>
+                                </div>
+                                <div className="note">
+                                    <ListItem button>
+                                        <ListItemIcon>
+                                            <NotificationsNoneOutlinedIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Remainder" />
+                                    </ListItem>
+                                </div>
+                                <div className="note">
+                                    <ListItem button>
+                                        <ListItemIcon>
+                                            <EditOutlinedIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Edit Labels" />
+                                    </ListItem>
+                                </div>
+                                <div className="note">
+                                    <ListItem button>
+                                        <ListItemIcon>
+                                            < ArchiveIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Archive" />
+                                    </ListItem>
+                                </div>
+                                <div className="note">
+                                    <ListItem button>
+                                        <ListItemIcon >
+                                            < DeleteOutlineOutlinedIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Trash" />
+                                    </ListItem>
+                                </div>
+                            </List>
+                        </div>
                     </div>
-                </div>
-                <div className="mainBody">
-                    <CreateNote />
-                    <div className="getAllNote">
-                        <DisplayNote />
-                    </div>
+                    <div className="mainBody">
+                        <CreateNote />
+                        <div className="displayAllNotes">
+                            <DisplayNote />
+                        </div>
 
+                    </div>
                 </div>
             </div>
 

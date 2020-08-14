@@ -8,6 +8,7 @@
     border: thin;
     border-bottom-color:gray ;
     z-index: 10;
+    position: fixed;
 }
 .header{
     padding-top:8px ;
@@ -28,9 +29,11 @@
 padding-left: 10px;
 }
 .heading{
-padding-top: 8px;
-padding-left: 15px;
-}
+// padding-top: 8px;
+// padding-left: 5px;
+align-items: center;
+
+ }
 .icon1{
     display: flex;
     flex-direction: row;
@@ -49,7 +52,8 @@ padding-left: 15px;
    
 }
 .searchIcon{
-    padding-left: 7px;;
+    padding-left: 7px;
+    opacity: 0.71;
 }
 .inputBox{
     padding-top: 9px;
@@ -63,39 +67,34 @@ padding-left: 15px;
 }
 .settingIcon{
     padding-right: 10px;
+    opacity: 0.71;
 }
 .refreshIcon{
     padding-right: 10px;
+    opacity: 0.71;
 }
 .sideNav{
-padding-top: 65px;
-position: relative;
 display: flex;
 flex-direction: column;
 width: 280px;
 height: calc(100%-64px);
-position: fixed;
 overflow: hidden;
 border-radius: 0%,50%,50%,0%;
 z-index: 1;
 
 }
 .sideNav1{
-    padding-top: 65px;
-position: relative;
 display: flex;
 flex-direction: column;
 width: 55px;
 height: calc(100%-64px);
-position: fixed;
 overflow: hidden;
-border-radius: 0%,50%,50%,0%;
+border-radius: 50%;
 z-index: 1;
 }
 
 .iconsBody{
     padding: 8px 16px 8px 16px;
-    opacity: 0.71;
 }
 .note{
     padding-left: 0px;
@@ -108,3 +107,40 @@ z-index: 1;
     
 }
 
+.Logo{
+    width: 40px;
+    height: 40px;
+    padding-right: 4px;
+}
+
+.bodyContener{
+    padding-top: 65px;
+    display: flex;
+    flex-direction: row;
+}
+.drawer{
+    display: flex;
+    flex-grow: 1;
+}
+
+@media only screen and (max-width: 500px) {
+    .inputBox{
+        display: none;
+    }
+    // .searchBarContainer{
+    //     display: flex;
+    //     justify-content: space-between;
+    // }
+    .clearIcon{
+        display: none;
+    }
+    .sideNav{
+       z-index: 3;
+    }
+    .searchBarContainer{
+        background-color: rgb(255, 255, 255);
+    }
+    .icon1{
+        flex-grow: 1;
+    }
+}
