@@ -52,7 +52,7 @@ align-items: center;
    
 }
 .searchIcon{
-    padding-left: 7px;
+    padding-left: 14px;
     opacity: 0.71;
 }
 .inputBox{
@@ -63,15 +63,13 @@ align-items: center;
     display: flex;
     flex-direction: row;
     flex-grow: 1;
-    justify-content: flex-end;
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
 }
-.settingIcon{
-    padding-right: 10px;
-    opacity: 0.71;
-}
-.refreshIcon{
-    padding-right: 10px;
-    opacity: 0.71;
+.icon3{
+    display: flex;
+    flex-grow: 1;
 }
 .sideNav{
 display: flex;
@@ -81,6 +79,7 @@ height: calc(100%-64px);
 overflow: hidden;
 border-radius: 0%,50%,50%,0%;
 z-index: 1;
+//transition: width 2s;
 
 }
 .sideNav1{
@@ -91,6 +90,7 @@ height: calc(100%-64px);
 overflow: hidden;
 border-radius: 50%;
 z-index: 1;
+//transition: width 2s;
 }
 
 .iconsBody{
@@ -144,3 +144,16 @@ z-index: 1;
         flex-grow: 1;
     }
 }
+.note:focus{
+    background-color: #feefc3;
+}
+
+.logoImage{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+    
+  
+ 

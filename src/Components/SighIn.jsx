@@ -7,8 +7,9 @@ import Link from '@material-ui/core/Link';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import FundooService from "../Services/userService";
+import NoteService from '../Services/NoteService';
 let service = new FundooService();
-
+let serviceNote= new NoteService();
 
 const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
 const validateForm = (errors) => {
@@ -41,6 +42,7 @@ export default class Registration extends React.Component {
     SnackbarClose = (event) => {
         this.setState({ SnackbarOpen: false });
     }
+   
 
     handleChange = (event) => {
         event.preventDefault();

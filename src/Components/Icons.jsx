@@ -1,13 +1,11 @@
 import React from 'react';
 import './icons.scss'
-import PropTypes from 'prop-types';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
-import { withStyles } from '@material-ui/core/styles';
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import ColorLensOutlinedIcon from '@material-ui/icons/ColorLensOutlined';
 import ImageOutlinedIcon from '@material-ui/icons/ImageOutlined';
@@ -16,9 +14,10 @@ import MoreVertOutlinedIcon from '@material-ui/icons/MoreVertOutlined';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
-import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
 import Snackbar from '@material-ui/core/Snackbar';
 import NoteService from "../Services/NoteService";
+import Tooltip from '@material-ui/core/Tooltip';
+import Collaborater from "./Collaborator.jsx"
 let services = new NoteService();
 
 export default class Icons extends React.Component {
@@ -31,8 +30,8 @@ export default class Icons extends React.Component {
             NoteId: '',
             delet: true,
             open: false,
+            collaboraterHandel: false
         };
-        // console.log(this.props.noteId.id);
     }
 
     deleteNote = () => {
@@ -41,11 +40,11 @@ export default class Icons extends React.Component {
             isDeleted: this.state.delet,
             noteIdList: [this.state.NoteId]
         };
-        console.log(apiDataToDeleteNote.noteIdList);
-        const token = localStorage.getItem('token');
+        // console.log(apiDataToDeleteNote.noteIdList);
+        // const token = localStorage.getItem('token');
 
         services
-            .deleteNote(apiDataToDeleteNote,token)
+            .deleteNote(apiDataToDeleteNote)
             .then((json) => {
                 if (json.status === 200) {
                     this.setState({
@@ -73,6 +72,17 @@ export default class Icons extends React.Component {
         this.setState({ open: false });
     };
 
+    handleCollaboraterOpen = () => {
+        this.setState({
+            collaboraterHandel: true
+        });
+        console.log("open");
+    }
+
+    handleCollaboraterClose = () => {
+        this.setState({ collaboraterHandel: false });
+    }
+
     render() {
 
         const { classes } = this.props;
@@ -94,54 +104,57 @@ export default class Icons extends React.Component {
                 />
 
 
-
-
-
-
-
-
-
                 <div className="iconf">
-                    <IconButton edge="start" color="inherit" >
-                        <NotificationsActiveIcon fontSize="small" color="inherit" />
-                    </IconButton>
+                    <Tooltip title="Notification" interactive>
+                        <IconButton edge="start" color="inherit" >
+                            <NotificationsActiveIcon fontSize="small" color="inherit" />
+                        </IconButton>
+                    </Tooltip>
                 </div>
                 <div className="iconf">
-                    <IconButton edge="start" color="inherit" >
-                        <PersonAddOutlinedIcon fontSize="small" color="inherit" />
-                    </IconButton>
-                </div>
-                <div className="iconf">
-                    <IconButton edge="start" color="inherit"  >
-                        <ColorLensOutlinedIcon fontSize="small" color="inherit" />
-                    </IconButton>
-                </div>
-                <div className="iconf">
-                    <IconButton edge="start" color="inherit" >
-                        <ImageOutlinedIcon fontSize="small" color="inherit" />
-                    </IconButton>
-                </div>
+                    <Tooltip title="Collaborater" interactive>
+                        <IconButton edge="start" color="inherit" onClick={() => this.handleCollaboraterOpen()} >
+                            <PersonAddOutlinedIcon fontSize="small" color="inherit" />
 
+                        </IconButton>
+                    </Tooltip>
+                </div>
                 <div className="iconf">
-                    <IconButton edge="start" color="inherit" aria-label="menu"  onClick={this.deleteNote}>
-                        <ArchiveIcon fontSize="small" color="rgba(0, 0, 0, 0.54)" />
-                    </IconButton>
+                    <Tooltip title="Change Color" interactive>
+                        <IconButton edge="start" color="inherit"  >
+                            <ColorLensOutlinedIcon fontSize="small" color="inherit" />
+                        </IconButton>
+                    </Tooltip>
+                </div>
+                <div className="iconf">
+                    <Tooltip title="Add Image" interactive>
+                        <IconButton edge="start" color="inherit" >
+                            <ImageOutlinedIcon fontSize="small" color="inherit" />
+                        </IconButton>
+                    </Tooltip>
                 </div>
 
                 <div className="iconf">
-                    <IconButton edge="start" color="inherit" buttonRef={node => {
-                        this.anchorEl = node;
-                    }}
-                        aria-owns={open ? 'menu-list-grow' : undefined}
-                        aria-haspopup="true"
-                        onClick={this.handleToggle} >
-                        <MoreVertOutlinedIcon  fontSize="small" color="inherit" />
-                    </IconButton>
+                    <Tooltip title="Archive" interactive>
+                        <IconButton edge="start" color="inherit" aria-label="menu"  >
+                            <ArchiveIcon fontSize="small" color="rgba(0, 0, 0, 0.54)" />
+                        </IconButton>
+                    </Tooltip>
                 </div>
 
+                <div className="iconf">
+                    <Tooltip title="More" interactive>
+                        <IconButton edge="start" color="inherit" buttonRef={node => {
+                            this.anchorEl = node;
+                        }}
+                            aria-owns={open ? 'menu-list-grow' : undefined}
+                            aria-haspopup="true"
+                            onClick={this.handleToggle} >
 
-                
-
+                            <MoreVertOutlinedIcon fontSize="small" color="inherit" />
+                        </IconButton>
+                    </Tooltip>
+                </div>
 
                 <div>
                     <Popper open={open} anchorEl={this.anchorEl} transition disablePortal>
@@ -154,7 +167,7 @@ export default class Icons extends React.Component {
                                 <Paper>
                                     <ClickAwayListener onClickAway={this.handleClose}>
                                         <MenuList>
-                                            <MenuItem >Delete note</MenuItem>
+                                            <MenuItem onClick={this.deleteNote}>Delete note</MenuItem>
                                             <MenuItem onClick={this.handleClose}>Add Label</MenuItem>
                                             <MenuItem onClick={this.handleClose}>Add drawing</MenuItem>
                                         </MenuList>
@@ -164,6 +177,8 @@ export default class Icons extends React.Component {
                         )}
                     </Popper>
                 </div>
+                    <div><Collaborater  collabaroterState={this.state.collaboraterHandel}  closeMethod={this.handleCollaboraterClose}/></div>
+        
             </div>
         );
     }

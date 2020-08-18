@@ -7,8 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
 import InputBase from '@material-ui/core/InputBase';
-import RefreshIcon from '@material-ui/icons/Refresh';
-import SettingsIcon from '@material-ui/icons/Settings';
+import logo from "../assetes/AccountLogo.jpg";
 import CreateNote from './CreateNote.jsx';
 import NoteService from "../Services/NoteService";
 import DisplayNote from "./DisplayNote.jsx";
@@ -23,6 +22,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ArchiveIcon from '@material-ui/icons/Archive';
+import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
 import pintask from "../assetes/pintask.svg";
 import { withStyles } from '@material-ui/core/styles';
 
@@ -72,25 +72,13 @@ export default class DashBord extends React.Component {
                                         fullWidth
                                     />
                                 </div>
-                                {/* <div className="clearIcon">
-                                    <IconButton edge="start" color="inherit" aria-label="menu">
-                                        <ClearIcon />
-                                    </IconButton>
-
-                                </div> */}
                             </div>
 
                         </div>
-                        <div className="icon2">
-                            <div className="refreshIcon">
-                                <IconButton edge="start" color="inherit" aria-label="menu">
-                                    <RefreshIcon />
-                                </IconButton>
-                            </div>
-                            <div className="settingIcon">
-                                <IconButton edge="start" color="inherit" aria-label="menu">
-                                    <SettingsIcon />
-                                </IconButton>
+                        <div className="icon3"></div>
+                         <div className="icon2">
+                            <div className="account">
+                                <img src={logo} class="logoImage" alt="pinTask" />
                             </div>
                         </div>
                     </div>

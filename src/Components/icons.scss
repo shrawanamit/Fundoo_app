@@ -8,3 +8,38 @@
     padding-left: 8px;
     opacity: 0.81;
  }
+ .CollaboretarBody{
+     display: flex;
+     flex-direction: row;
+ }
+ .personIcons{
+    border: 1px solid black;
+    border-radius: 50%;
+    padding-left: 10px;
+   
+    opacity: 0.71;
+ }
+ .dilogAction{
+     height: 60px;
+     width: 100%;
+     background-color:rgba(0,0,0,0.07);
+ }
+ .emailId{
+    padding-left: 20px;
+    display: flex;
+    width: 70%;
+ }
+ .collaboraterContainer{
+     border: 1px transparent;
+     border-radius: 10px;
+     overflow: hidden;
+ }
+ .cbtn{
+     margin-right: 20px;
+ }
+ .cbtn1{
+    margin-right: 20px;
+}
+.CollaboretarBody{
+    padding: 15px;
+}

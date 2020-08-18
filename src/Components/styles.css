@@ -21,6 +21,12 @@
     padding: 0px;
     padding-top: 0px !important;
   }
+  .MuiButton-root{
+    font-weight: 550 !important;
+    font-family: 'Google Sans',Roboto,Arial,sans-serif !important;
+    text-transform: none !important;
+    opacity: 0.78;
+  }
   @media only screen and (max-width: 500px)
   {
     .MuiDialogContent-root{

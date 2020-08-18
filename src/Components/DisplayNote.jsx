@@ -4,9 +4,7 @@ import Icons from './Icons.jsx';
 import InputBase from '@material-ui/core/InputBase';
 import pintask from "../assetes/pintask.svg";
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent'
-import { StylesProvider } from "@material-ui/core/styles";
 import NoteService from "../Services/NoteService";
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -22,21 +20,23 @@ export default class DisplayNote extends React.Component {
         this.state = {
             History: [],
             open: false,
-            id:'',
-            title:'',
-            discrreption:'',
+            id: '',
+            title: '',
+            discrreption: '',
             SnackbarOpen: false,
             SnackbarMessage: '',
         };
     }
 
     handleClickOpen = (cardObject) => {
-        this.setState({ open: true });
-        this.setState({ id: cardObject.id });
-        this.setState({ title:cardObject.title });
-        this.setState({ description: cardObject.description });
-      };
-      handleChangeText = (event) => {
+        this.setState({
+            open: true,
+            id: cardObject.id,
+            title: cardObject.title,
+            description: cardObject.description
+        });
+    };
+    handleChangeText = (event) => {
         this.setState({
             [event.target.name]: event.target.value,
         });
@@ -45,21 +45,19 @@ export default class DisplayNote extends React.Component {
     SnackbarClose = (event) => {
         this.setState({ SnackbarOpen: false });
     }
-      updateNote = () => {
-        
+    updateNote = () => {
+
         const apiUpdateedInputData = {
             title: this.state.title,
             description: this.state.description,
-            noteId:this.state.id,
+            noteId: this.state.id,
         };
-        const token = localStorage.getItem('token');
-        console.log(this.state.id);
         services
-            .updateNote(apiUpdateedInputData,token)
+            .updateNote(apiUpdateedInputData)
             .then((json) => {
                 if (json.status === 200) {
                     this.setState({
-                        SnackbarOpen: true, SnackbarMessage: 'note update Sucessfull !!', open: false ,
+                        SnackbarOpen: true, SnackbarMessage: 'note update Sucessfull !!', open: false,
                     });
                     this.getAllNote();
                 }
@@ -74,23 +72,20 @@ export default class DisplayNote extends React.Component {
         this.getAllNote();
     }
 
-     getAllNote = () => {
-         const token = localStorage.getItem('token')
-         console.log(token);
-        services.getAllNotes(token).then((data) => {
-            console.log(" All historyfound ", data.data.data);
-            this.setState({ History: data.data.data.data });
+    getAllNote = () => {
+        services.getAllNotes().then((data) => {
+            this.setState({ History: data.data.data.data.filter(user => user.isDeleted === false) });
+
             console.log("History Array", this.state.History);
         }).catch((err) => {
             console.log(err);
-
         })
     }
 
     render() {
         return (
             <div className="displayNote" >
-                 <Snackbar
+                <Snackbar
                     anchorOrigin={{ vertical: 'center', horizontal: 'center' }}
                     open={this.state.SnackbarOpen}
                     autoHideDuration={3000}
@@ -104,7 +99,7 @@ export default class DisplayNote extends React.Component {
                 {this.state.History.reverse().map((row) => (
                     <div className="getNotes"  >
                         <div className="titleHidden">
-                            <div className="displayTitle" onClick={()=>this.handleClickOpen(row)}>
+                            <div className="displayTitle" onClick={() => this.handleClickOpen(row)}>
                                 {row.title}
                             </div>
                             <div className="pinIcons">
@@ -115,13 +110,13 @@ export default class DisplayNote extends React.Component {
                             {row.description}
                         </div>
                         <div className="getIcons">
-                            <Icons noteId={row}/>
+                            <Icons noteId={row} />
                         </div>
                     </div >
                 ))}
 
                 <div className="dilogBox">
-                    <Dialog  open={this.state.open}
+                    <Dialog open={this.state.open}
                         onClose={this.handleClose} >
                         <DialogContent>
                             <div className="dilogBody">
@@ -145,15 +140,15 @@ export default class DisplayNote extends React.Component {
                                     />
                                 </div>
                                 <div className="iconsBody">
-                                <div className="iconDiv">
-                                    <div className="iconPart1">
-                                        <Icons />
-                                    </div>
-                                    <div className="iconPart2">
-                                        <Button onClick={this.updateNote}>update</Button>
+                                    <div className="iconDiv">
+                                        <div className="iconPart1">
+                                            <Icons />
+                                        </div>
+                                        <div className="iconPart2">
+                                            <Button onClick={this.updateNote}>close</Button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             </div>
                         </DialogContent>
                     </Dialog>

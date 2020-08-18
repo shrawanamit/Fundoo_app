@@ -1,6 +1,5 @@
 import React from 'react';
 import "./createNote.scss";
-import DisplayNote from './DisplayNote.jsx';
 import Icons from './Icons.jsx';
 import InputBase from '@material-ui/core/InputBase';
 import Button from '@material-ui/core/Button';
@@ -10,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import BrushOutlinedIcon from '@material-ui/icons/BrushOutlined';
 import ImageOutlinedIcon from '@material-ui/icons/ImageOutlined';
 import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined';
+import { Tooltip } from '@material-ui/core';
 let services = new NoteService();
 
 
@@ -40,7 +40,6 @@ export default class CreateNote extends React.Component {
 
     createNoteOpen = () => {
         this.setState({ noteOpen: false });
-        console.log("note");
     }
 
 
@@ -50,13 +49,15 @@ export default class CreateNote extends React.Component {
             title: this.state.title,
             description: this.state.description,
         };
-        const token = localStorage.getItem('token')
+        
         services
-            .CreateNote(token,apiInputData)
+            .CreateNote(apiInputData)
             .then((json) => {
                 if (json.status === 200) {
                     this.setState({
-                        SnackbarOpen: true, SnackbarMessage: 'note created Sucessfull !!',noteOpen: true
+                        SnackbarOpen: true, 
+                        SnackbarMessage: 'note created Sucessfull !!',
+                        noteOpen: true
                     });
                    
                 }
@@ -92,19 +93,26 @@ export default class CreateNote extends React.Component {
                     </div>
                     <div className="noteIcon">
                         <div className="noteIcon1">
+                        <Tooltip title="New List">
                             <IconButton  color="inherit">
                                 <CheckBoxOutlinedIcon fontSize="small" color="inherit" />
                             </IconButton>
+                            </Tooltip>
                         </div>
                         <div className="noteIcon1">
+                        <Tooltip title="Add Note with Drawing">
                             <IconButton edge="start" color="inherit" >
                                 <BrushOutlinedIcon fontSize="small" color="inherit" />
                             </IconButton>
+                            </Tooltip>
                         </div>
                         <div className="noteIcon1">
+                            <Tooltip title="Add Image">
                             <IconButton edge="start" color="inherit" >
                                 <ImageOutlinedIcon  fontSize="small" color="inherit" />
                             </IconButton>
+                            </Tooltip>
+                           
                         </div>
                     </div>
                 </div>:
@@ -135,11 +143,46 @@ export default class CreateNote extends React.Component {
                                 <Icons />
                                 </div>
                                 <div className="iconPart2">
-                                <Button  onClick={this.Createnote}>close</Button>
+                                <Button  onClick={this.Createnote}>Close</Button>
                                 </div>
                             </div>
                         </div> 
                     </div>  }
+
+
+                    {/* <div className="noteBody">
+               
+               <div className="title">
+                  <InputBase
+                      placeholder="Title"
+                      fullWidth
+                      multiline
+                      name="title"
+                      value={this.state.title}
+                      onChange={this.handleChangeText}
+                  /></div>
+              <div className="note1">
+                  <InputBase
+                      placeholder="Take a note..."
+                      fullWidth
+                      multiline
+                      name="description"
+                      value={this.state.description}
+                      onChange={this.handleChangeText}
+                  />
+              </div>
+              <div className="iconsBody">
+                  <div className="iconDiv">
+                      <div className="iconPart1">
+                      <Icons />
+                      </div>
+                      <div className="iconPart2">
+                      <Button  onClick={this.Createnote}>close</Button>
+                      </div>
+                  </div>
+              </div> 
+          </div> */}
+
             </div>
         );
     }
