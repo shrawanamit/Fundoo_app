@@ -9,7 +9,11 @@ import Button from '@material-ui/core/Button';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Divider from '@material-ui/core/Divider';
 import NoteService from "../Services/NoteService";
-import MenuList from "./SearchMenuList.jsx";
+import Paper from '@material-ui/core/Paper';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 let services = new NoteService();
 
 
@@ -17,45 +21,71 @@ export default class Collaborator extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { 
-            email:'',
-            userList: []
+        this.state = {
+            userInput: '',
+            filteredList: [],
+            open: true,
+            firstName:'',
+            lastName:'',
+            userId:'',
+            Id:'',
+
         };
     }
 
-    handleChange = (event) =>{
-        this.setState({
-            [event.target.name]: event.target.value,
+
+   
+
+
+    handelClick = (arrarObject) => {
+        this.setState({ 
+            open: !this.state.open,
+            userInput: arrarObject.email,
+            firstName:arrarObject.firstName,
+            lastName:arrarObject.lastName,
+            userId:arrarObject.userId,
+            filteredList:[],
+            
         });
     }
-// //for fetching  notes from database
-//     componentDidMount() {
-//         this. handelSearch();
-//     }
 
-    handelSearch = () =>{
-        const apiRequestData={
-            searchWord:this.state.email
+    handelSearch = (e) => {
+        this.setState({ userInput: e.target.value });
+        const apiRequestData = {
+            searchWord: e.target.value,
         };
-        
-        
         services
-        .searchUserList(apiRequestData)
-        .then((resPonse)=>{
-          
-                this.setState({userList: resPonse.data.details.email});
+            .searchUserList(apiRequestData)
+            .then((data) => {
+                this.setState({ filteredList: data.data.data.details });
+                console.log("user list", data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
 
-                console.log("user list", this.state.userList);
-         
+    }
+    addColaborater = ()=>{
+        console.log(this.props.Id.id);
+        const apiRequest = {
+            firstName:this.state.firstName,
+            lastName:this.state.lastName,
+            email: this.state.userInput,
+            userId:this.state.userId,
+            id:this.props.Id.id,
+        };
+        services
+        .colaboratesNote(apiRequest)
+        .then((data) => {
+            console.log("colaborate notes", data);
         })
         .catch((err) => {
             console.log(err);
         });
-
     }
-   
 
     render() {
+        const myBest = this.state.filteredList.slice(0, 10);
         return (
             <div>
                 <div className="collaboraterContainer" >
@@ -72,21 +102,34 @@ export default class Collaborator extends React.Component {
                                         <PersonAddOutlinedIcon fontSize="small" color="inherit" />
                                     </IconButton>
                                 </div>
-                                <div className="emailId">
-                                    <InputBase
-                                        placeholder="person or email to share with"
-                                        fullWidth
-                                        fullWidth
-                                        type="email"
-                                        name="email"
-                                        label="Username"
-                                        defaultValue={this.state.email}
-                                        onChange={this.handleChange} 
-                                        onKeyUp={this. handelSearch}
-
-                                    />
+                                <div className="searchemail">
+                                    <div className="userInputId">
+                                        <InputBase
+                                            placeholder="person or email to share with"
+                                            fullWidth
+                                            type="text"
+                                            name="userInput"
+                                            value={this.state.userInput}
+                                            onChange={this.handelSearch}
+                                        />
+                                    </div>
+                                    <div className="AutoComplite">
+                                        <Paper>
+                                            <ClickAwayListener onClickAway={this.handleClose}>
+                                                <MenuList>
+                                                    {myBest.map((row) => (
+                                                        <MenuItem onClick={() => this.handelClick(row)}>{row.email}</MenuItem>
+                                                    ))}
+                                                </MenuList>
+                                            </ClickAwayListener >
+                                        </Paper>
+                                    </div>
                                 </div>
-                                {/* <div><MenuList /></div> */}
+                                <div className="check" onClick={this.addColaborater}>
+                                        <IconButton edge="start" color="inherit" >
+                                            <CheckOutlinedIcon fontSize="small" color="inherit" />
+                                        </IconButton>
+                                    </div>
                             </div>
                         </DialogContent>
 

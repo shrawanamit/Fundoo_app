@@ -33,4 +33,9 @@ export default class NoteService {
           authorization: token
         }});
       }
+      colaboratesNote(data){
+        return axiosService.Post(`${apiUrl}notes/${data.id}/AddcollaboratorsNotes`,data,{ headers: {
+          authorization: token
+        }});
+      }
 }

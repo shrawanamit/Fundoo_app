@@ -13,11 +13,11 @@ import ArchiveIcon from '@material-ui/icons/Archive';
 import MoreVertOutlinedIcon from '@material-ui/icons/MoreVertOutlined';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import NoteService from "../Services/NoteService";
 import Tooltip from '@material-ui/core/Tooltip';
-import Collaborater from "./Collaborator.jsx"
+import Collaborater from "./Collaborator.jsx";
+import Image from "./Image.jsx"
 let services = new NoteService();
 
 export default class Icons extends React.Component {
@@ -65,9 +65,9 @@ export default class Icons extends React.Component {
     };
 
     handleClose = event => {
-        if (this.anchorEl.contains(event.target)) {
-            return;
-        }
+        // if (this.anchorEl.contains(event.target)) {
+        //     return;
+        // }
 
         this.setState({ open: false });
     };
@@ -84,8 +84,6 @@ export default class Icons extends React.Component {
     }
 
     render() {
-
-        const { classes } = this.props;
         const { open } = this.state;
 
         return (
@@ -177,7 +175,7 @@ export default class Icons extends React.Component {
                         )}
                     </Popper>
                 </div>
-                    <div><Collaborater  collabaroterState={this.state.collaboraterHandel}  closeMethod={this.handleCollaboraterClose}/></div>
+                    <div><Collaborater  collabaroterState={this.state.collaboraterHandel}  Id={this.props.noteId}closeMethod={this.handleCollaboraterClose}/></div>
         
             </div>
         );

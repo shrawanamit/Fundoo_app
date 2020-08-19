@@ -1,15 +1,12 @@
 import React from 'react';
 import "./dashboard.scss";
-import MiniDrawer from './drawer.jsx';
 import IconButton from '@material-ui/core/IconButton';
 import MenuOutlinedIcon from '@material-ui/icons/MenuOutlined';
 import Typography from '@material-ui/core/Typography';
 import SearchIcon from '@material-ui/icons/Search';
-import ClearIcon from '@material-ui/icons/Clear';
 import InputBase from '@material-ui/core/InputBase';
 import logo from "../assetes/AccountLogo.jpg";
 import CreateNote from './CreateNote.jsx';
-import NoteService from "../Services/NoteService";
 import DisplayNote from "./DisplayNote.jsx";
 import "./dashboard.scss";
 import Logo from "../assetes/fundooLogo.png";
@@ -22,9 +19,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ArchiveIcon from '@material-ui/icons/Archive';
-import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
-import pintask from "../assetes/pintask.svg";
-import { withStyles } from '@material-ui/core/styles';
 
 export default class DashBord extends React.Component {
 

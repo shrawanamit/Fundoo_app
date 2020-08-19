@@ -9,8 +9,6 @@ import IconButton from '@material-ui/core/IconButton';
 import FundooService from "../Services/userService";
 let service = new FundooService();
 
-
-
 const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
 
 const  validateForm = (errors) => {
