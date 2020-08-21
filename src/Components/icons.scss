@@ -63,3 +63,39 @@
 .AutoCompliteNone{
  display: none;
 }
+.collaboratedEmail{
+    display: flex;
+    flex-direction: row;
+    padding: 4px;
+    padding-left: 15px
+}
+.image{
+    display:none;
+}
+
+.colorBody {
+    width:24px ;
+    height:24px;
+    border: 1px transparent;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 2px;
+    cursor: pointer;
+
+    &:hover{
+        border: 1px solid black;
+
+    }
+    &:focus-visible{
+        border: 1px solid black;
+
+    }
+}
+.colorCard{
+    width:120px ;
+    height:96px ;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    
+}

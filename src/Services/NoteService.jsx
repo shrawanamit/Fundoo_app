@@ -38,4 +38,9 @@ export default class NoteService {
           authorization: token
         }});
       }
+      addColorToNote(data){
+        return axiosService.Post(`${apiUrl}notes/changesColorNotes`,data,{ headers: {
+          authorization: token
+        }});
+      }
 }

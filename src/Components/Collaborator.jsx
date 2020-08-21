@@ -14,6 +14,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
+import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
+import ClearOutlinedIcon from '@material-ui/icons/ClearOutlined';
 let services = new NoteService();
 
 
@@ -25,27 +27,30 @@ export default class Collaborator extends React.Component {
             userInput: '',
             filteredList: [],
             open: true,
-            firstName:'',
-            lastName:'',
-            userId:'',
-            Id:'',
+            firstName: '',
+            lastName: '',
+            userId: '',
+            Id: '',
+            colaboraterDetails: [],
+            detail: ''
 
         };
     }
 
 
-   
+
 
 
     handelClick = (arrarObject) => {
-        this.setState({ 
+        this.setState({
             open: !this.state.open,
             userInput: arrarObject.email,
-            firstName:arrarObject.firstName,
-            lastName:arrarObject.lastName,
-            userId:arrarObject.userId,
-            filteredList:[],
-            
+            firstName: arrarObject.firstName,
+            lastName: arrarObject.lastName,
+            userId: arrarObject.userId,
+            filteredList: [],
+
+
         });
     }
 
@@ -59,29 +64,33 @@ export default class Collaborator extends React.Component {
             .then((data) => {
                 this.setState({ filteredList: data.data.data.details });
                 console.log("user list", data);
+                console.log("list", this.state.filteredList);
             })
             .catch((err) => {
                 console.log(err);
             });
 
     }
-    addColaborater = ()=>{
+    addColaborater = () => {
         console.log(this.props.Id.id);
         const apiRequest = {
-            firstName:this.state.firstName,
-            lastName:this.state.lastName,
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
             email: this.state.userInput,
-            userId:this.state.userId,
-            id:this.props.Id.id,
+            userId: this.state.userId,
+            id: this.props.Id.id,
         };
         services
-        .colaboratesNote(apiRequest)
-        .then((data) => {
-            console.log("colaborate notes", data);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+            .colaboratesNote(apiRequest)
+            .then((data) => {
+                console.log("colaborate notes", data);
+                this.setState(prevState => ({
+                    colaboraterDetails: [...prevState.colaboraterDetails, JSON.parse(data.config.data)]
+                }))
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 
     render() {
@@ -96,6 +105,30 @@ export default class Collaborator extends React.Component {
                         </DialogTitle>
                         <Divider light />
                         <DialogContent>
+                            <div className="collaboratedEmail"  >
+                                <div className="personIcons">
+                                    <IconButton edge="start" color="inherit" >
+                                        <PersonOutlineOutlinedIcon fontSize="small" color="inherit" />
+                                    </IconButton>
+                                </div>
+                                <div className="displayTitle" >
+                                    <span>amitkumar06111@gmail.com(owner)</span>
+                                </div>
+                            </div>
+
+                            {this.state.colaboraterDetails.map((row) => (
+                                <div className="collaboratedEmail"  >
+                                    <div className="personIcons">
+                                        <IconButton edge="start" color="inherit" >
+                                            <PersonOutlineOutlinedIcon fontSize="small" color="inherit" />
+                                        </IconButton>
+                                    </div>
+                                    <div className="displayTitle" >
+                                        {row.email}
+                                    </div>
+                                </div>
+                            ))}
+
                             <div className="CollaboretarBody">
                                 <div className="personIcons">
                                     <IconButton edge="start" color="inherit" >
@@ -126,11 +159,16 @@ export default class Collaborator extends React.Component {
                                     </div>
                                 </div>
                                 <div className="check" onClick={this.addColaborater}>
-                                        <IconButton edge="start" color="inherit" >
-                                            <CheckOutlinedIcon fontSize="small" color="inherit" />
-                                        </IconButton>
-                                    </div>
+                                    <IconButton edge="start" color="inherit" >
+                                        <CheckOutlinedIcon fontSize="small" color="inherit" />
+                                    </IconButton>
+                                </div>
                             </div>
+
+
+
+
+
                         </DialogContent>
 
                         <div className="dilogAction">

@@ -17,8 +17,20 @@ import Snackbar from '@material-ui/core/Snackbar';
 import NoteService from "../Services/NoteService";
 import Tooltip from '@material-ui/core/Tooltip';
 import Collaborater from "./Collaborator.jsx";
+import AddColor from "./AddColor.jsx";
 import Image from "./Image.jsx"
+import { withStyles } from '@material-ui/core/styles';
 let services = new NoteService();
+
+
+const styles = theme => ({
+    root: {
+        display: 'flex',
+    },
+    paper: {
+        marginRight: theme.spacing.unit * 2,
+    },
+});
 
 export default class Icons extends React.Component {
 
@@ -30,19 +42,39 @@ export default class Icons extends React.Component {
             NoteId: '',
             delet: true,
             open: false,
-            collaboraterHandel: false
-        };
+            collaboraterHandel: false,
+            colorHandel: false,
+            imageHandel: false,
+            colorCodeState: '',
+            noteList: '',
+            purpel:"#fdcfe8",
+            responseData:'',
+             list :[
+                {name:"purpael", Code: "#9B30FF"},
+                {name: "pink", Code: "#fdcfe8"},
+                {name: "brown", Code: "#e6c9a8"},
+                {name: "grey", Code: "#e8eaed"},
+                {name: "darkBlue", Code: "#aecbfa"},
+                {name: "blue", Code: "#cbf0f8"},
+                {name: "tiel", Code: "#a7ffeb"},
+                {name: "green", Code: "#ccff90"},
+                {name: "yellow", Code: "#fff475"},
+                {name: "orange", Code: "#fbbc04"},
+                {name: "red", Code: "#f28b82"},
+                {name: "default", Code: "#e0e0e0"}
+            ]
+         };
     }
+
 
     deleteNote = () => {
         this.setState({ NoteId: this.props.noteId.id });
+        console.log(this.state.NoteId);
         const apiDataToDeleteNote = {
             isDeleted: this.state.delet,
             noteIdList: [this.state.NoteId]
         };
-        // console.log(apiDataToDeleteNote.noteIdList);
-        // const token = localStorage.getItem('token');
-
+        
         services
             .deleteNote(apiDataToDeleteNote)
             .then((json) => {
@@ -56,19 +88,40 @@ export default class Icons extends React.Component {
                 console.log(err);
             });
     }
+
+
+     handelColor = async (colorCode) => {
+        
+            await this.setState({ noteList: this.props.noteId.id });
+           
+        const apiRequestData = {
+            color: colorCode,
+            noteIdList: [this.state.noteList]
+        };
+        console.log("color code",apiRequestData);
+        services
+            .addColorToNote(apiRequestData)
+            .then((response) => {
+                console.log(response);
+                this.props.refraceNote();
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+
+    };
     SnackbarClose = (event) => {
         this.setState({ SnackbarOpen: false });
     }
 
     handleToggle = () => {
-        this.setState(state => ({ open: !state.open }));
+        this.setState(state => ({ open: !this.state.open }));
     };
+    handleToggleColor = () => {
+        this.setState(state => ({ colorHandel: !this.state.colorHandel }));
+    }
 
     handleClose = event => {
-        // if (this.anchorEl.contains(event.target)) {
-        //     return;
-        // }
-
         this.setState({ open: false });
     };
 
@@ -82,6 +135,25 @@ export default class Icons extends React.Component {
     handleCollaboraterClose = () => {
         this.setState({ collaboraterHandel: false });
     }
+
+    handleAddColorToggle = () => {
+        this.setState(state => ({ colorHandel: !this.state.colorHandel }));
+    };
+
+
+    handleColorMenuColse = event => {
+        if (this.anchorEl.contains(event.target)) {
+            return;
+        }
+        this.setState({ colorHandel: false });
+    };
+
+
+    handalImageMenu = () => {
+        this.setState({ imageHandel: true });
+    }
+
+
 
     render() {
         const { open } = this.state;
@@ -113,23 +185,50 @@ export default class Icons extends React.Component {
                     <Tooltip title="Collaborater" interactive>
                         <IconButton edge="start" color="inherit" onClick={() => this.handleCollaboraterOpen()} >
                             <PersonAddOutlinedIcon fontSize="small" color="inherit" />
-
                         </IconButton>
                     </Tooltip>
                 </div>
+
                 <div className="iconf">
                     <Tooltip title="Change Color" interactive>
-                        <IconButton edge="start" color="inherit"  >
+                        <IconButton edge="start" color="inherit"
+                            buttonRef={node => {
+                                this.anchorEl = node;
+                            }}
+                            aria-owns={this.state.colorHandel ? 'menu-list-grow' : undefined}
+                            aria-haspopup="true"
+                            onClick={this.handleAddColorToggle}>
                             <ColorLensOutlinedIcon fontSize="small" color="inherit" />
                         </IconButton>
                     </Tooltip>
+                    <Popper open={this.state.colorHandel} anchorEl={this.anchorEl} transition disablePortal>
+                        {({ TransitionProps, placement }) => (
+                            <Grow
+                                {...TransitionProps}
+                                id="menu-list-grow"
+                                style={{ transformOrigin: placement === 'top' ? 'center top' : 'center bottom' }}
+                            >
+                                <Paper>
+                                    <ClickAwayListener onClickAway={this.handleColorMenuColse}>
+                                        <MenuList>
+                                            <div className="colorCard">
+                                                {
+                                                    this.state.list.map((row)=>(
+                                                        <div className="colorBody" style={{backgroundColor:row.Code}}onClick={() => this.handelColor(row.Code)}></div>
+    
+                                                    ))}
+                                                
+                                            </div>
+                                        </MenuList>
+                                    </ClickAwayListener>
+                                </Paper>
+                            </Grow>
+                        )}
+                    </Popper>
                 </div>
+
                 <div className="iconf">
-                    <Tooltip title="Add Image" interactive>
-                        <IconButton edge="start" color="inherit" >
-                            <ImageOutlinedIcon fontSize="small" color="inherit" />
-                        </IconButton>
-                    </Tooltip>
+                <Image />
                 </div>
 
                 <div className="iconf">
@@ -175,9 +274,14 @@ export default class Icons extends React.Component {
                         )}
                     </Popper>
                 </div>
-                    <div><Collaborater  collabaroterState={this.state.collaboraterHandel}  Id={this.props.noteId}closeMethod={this.handleCollaboraterClose}/></div>
-        
-            </div>
+                <div><Collaborater collabaroterState={this.state.collaboraterHandel} Id={this.props.noteId} closeMethod={this.handleCollaboraterClose} /></div>
+                {/* <div> <AddColor togelColorMenu={this.state.colorHandel}  togelColorMethod={this.handleToggleColor}/></div> */}
+               
+
+            </div >
+
         );
     }
+
+
 }

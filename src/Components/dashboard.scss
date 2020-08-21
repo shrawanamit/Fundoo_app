@@ -80,6 +80,9 @@ overflow: hidden;
 border-radius: 0%,50%,50%,0%;
 z-index: 1;
 //transition: width 2s;
+&:focus-visible{
+    border:1px solid orange;
+}
 
 }
 .sideNav1{

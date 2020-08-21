@@ -25,16 +25,21 @@ export default class DisplayNote extends React.Component {
             discrreption: '',
             SnackbarOpen: false,
             SnackbarMessage: '',
+            noteColor:'',
         };
     }
+
+     
 
     handleClickOpen = (cardObject) => {
         this.setState({
             open: true,
             id: cardObject.id,
             title: cardObject.title,
-            description: cardObject.description
+            description: cardObject.description,
+            noteColor:cardObject.color,
         });
+        console.log("=================",this.state.noteColor);
     };
     handleChangeText = (event) => {
         this.setState({
@@ -82,6 +87,8 @@ export default class DisplayNote extends React.Component {
         })
     }
 
+
+
     render() {
         return (
             <div className="displayNote" >
@@ -97,7 +104,7 @@ export default class DisplayNote extends React.Component {
                     ]}
                 />
                 {this.state.History.reverse().map((row) => (
-                    <div className="getNotes"  >
+                    <div className="getNotes"  style={{backgroundColor:row.color}}>
                         <div className="titleHidden">
                             <div className="displayTitle" onClick={() => this.handleClickOpen(row)}>
                                 {row.title}
@@ -110,12 +117,12 @@ export default class DisplayNote extends React.Component {
                             {row.description}
                         </div>
                         <div className="getIcons">
-                            <Icons noteId={row} />
+                            <Icons noteId={row}   refraceNote={this.getAllNote}/>
                         </div>
                     </div >
                 ))}
 
-                <div className="dilogBox">
+                <div className="dilogBox" style={{backgroundColor:this.state.noteColor}}>
                     <Dialog open={this.state.open}
                         onClose={this.handleClose} >
                         <DialogContent>
