@@ -18,18 +18,18 @@ export default class DisplayNote extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            History: [],
+            allNotes: [],
             open: false,
             id: '',
             title: '',
             discrreption: '',
             SnackbarOpen: false,
             SnackbarMessage: '',
-            noteColor:'',
+            noteColor: '',
         };
     }
 
-     
+
 
     handleClickOpen = (cardObject) => {
         this.setState({
@@ -37,9 +37,9 @@ export default class DisplayNote extends React.Component {
             id: cardObject.id,
             title: cardObject.title,
             description: cardObject.description,
-            noteColor:cardObject.color,
+            noteColor: cardObject.color,
         });
-        console.log("=================",this.state.noteColor);
+        console.log("======note color===========", this.state.noteColor);
     };
     handleChangeText = (event) => {
         this.setState({
@@ -79,9 +79,9 @@ export default class DisplayNote extends React.Component {
 
     getAllNote = () => {
         services.getAllNotes().then((data) => {
-            this.setState({ History: data.data.data.data.filter(user => user.isDeleted === false) });
+            this.setState({ allNotes: data.data.data.data.filter(user => user.isDeleted === false) });
 
-            console.log("History Array", this.state.History);
+            console.log("allNotes Array", this.state.allNotes);
         }).catch((err) => {
             console.log(err);
         })
@@ -103,8 +103,11 @@ export default class DisplayNote extends React.Component {
                             color="inherit" onClick={this.SnackbarClose}>x</IconButton>
                     ]}
                 />
-                {this.state.History.reverse().map((row) => (
-                    <div className="getNotes"  style={{backgroundColor:row.color}}>
+                {this.state.allNotes.reverse().map((row) => (
+                    <div className="getNotes" style={{ backgroundColor: row.color }}>
+                        <div className="displayImageContener">
+                                <div className="displayImage"></div>
+                        </div>
                         <div className="titleHidden">
                             <div className="displayTitle" onClick={() => this.handleClickOpen(row)}>
                                 {row.title}
@@ -116,13 +119,24 @@ export default class DisplayNote extends React.Component {
                         <div className="discreptionHidden">
                             {row.description}
                         </div>
-                        <div className="getIcons">
-                            <Icons noteId={row}   refraceNote={this.getAllNote}/>
+
+                        <div className="displayCollaborater">
+                              {row.collaborators.map((object) => (
+                                   <div className="collaboraterBody">
+                                      {object.email}
+                                   </div>
+                              ))}
+                           
+
                         </div>
+                        <div className="getIcons">
+                            <Icons noteId={row} refraceNote={this.getAllNote} />
+                        </div>
+
                     </div >
                 ))}
 
-                <div className="dilogBox" style={{backgroundColor:this.state.noteColor}}>
+                <div className="dilogBox" style={{ backgroundColor: this.state.noteColor }}>
                     <Dialog open={this.state.open}
                         onClose={this.handleClose} >
                         <DialogContent>

@@ -85,6 +85,34 @@
 .iconPart1{
     opacity: 0.75;
 }
+
+.listContener{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+}
+.checkList{
+    padding-left: 18px;
+}
+.listItem{
+    
+    flex-grow: 5;
+}
+.addListItem{
+    display: flex;
+}
+.collaboratorContainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-height: 43px;
+}
+.collaboratorBody{
+    width: 15%;
+    height: 90%;
+}
+
 @media only screen and (max-width: 500px) {
     .getAllNote{ 
      width: 295px;

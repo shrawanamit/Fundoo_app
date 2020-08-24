@@ -47,34 +47,34 @@ export default class Icons extends React.Component {
             imageHandel: false,
             colorCodeState: '',
             noteList: '',
-            purpel:"#fdcfe8",
-            responseData:'',
-             list :[
-                {name:"purpael", Code: "#9B30FF"},
-                {name: "pink", Code: "#fdcfe8"},
-                {name: "brown", Code: "#e6c9a8"},
-                {name: "grey", Code: "#e8eaed"},
-                {name: "darkBlue", Code: "#aecbfa"},
-                {name: "blue", Code: "#cbf0f8"},
-                {name: "tiel", Code: "#a7ffeb"},
-                {name: "green", Code: "#ccff90"},
-                {name: "yellow", Code: "#fff475"},
-                {name: "orange", Code: "#fbbc04"},
-                {name: "red", Code: "#f28b82"},
-                {name: "default", Code: "#e0e0e0"}
+            purpel: "#fdcfe8",
+            responseData: '',
+            list: [
+                { name: "purpael", Code: "#9B30FF" },
+                { name: "pink", Code: "#fdcfe8" },
+                { name: "brown", Code: "#e6c9a8" },
+                { name: "grey", Code: "#e8eaed" },
+                { name: "darkBlue", Code: "#aecbfa" },
+                { name: "blue", Code: "#cbf0f8" },
+                { name: "tiel", Code: "#a7ffeb" },
+                { name: "green", Code: "#ccff90" },
+                { name: "yellow", Code: "#fff475" },
+                { name: "orange", Code: "#fbbc04" },
+                { name: "red", Code: "#f28b82" },
+                { name: "default", Code: "#e0e0e0" }
             ]
-         };
+        };
     }
 
 
-    deleteNote = () => {
-        this.setState({ NoteId: this.props.noteId.id });
-        console.log(this.state.NoteId);
+    deleteNote = async () => {
+        await this.setState({ NoteId: this.props.noteId.id });
+        
         const apiDataToDeleteNote = {
             isDeleted: this.state.delet,
             noteIdList: [this.state.NoteId]
         };
-        
+
         services
             .deleteNote(apiDataToDeleteNote)
             .then((json) => {
@@ -82,6 +82,7 @@ export default class Icons extends React.Component {
                     this.setState({
                         SnackbarOpen: true, SnackbarMessage: 'note deleted Sucessfull !!',
                     });
+                    this.props.refraceNote();
                 }
             })
             .catch((err) => {
@@ -90,15 +91,14 @@ export default class Icons extends React.Component {
     }
 
 
-     handelColor = async (colorCode) => {
-        
-            await this.setState({ noteList: this.props.noteId.id });
-           
+    handelColor = async (colorCode) => {
+
+        await this.setState({ noteList: this.props.noteId.id });
         const apiRequestData = {
             color: colorCode,
             noteIdList: [this.state.noteList]
         };
-        console.log("color code",apiRequestData);
+        console.log("color code", apiRequestData);
         services
             .addColorToNote(apiRequestData)
             .then((response) => {
@@ -160,7 +160,7 @@ export default class Icons extends React.Component {
 
         return (
 
-            <div className="Iconbody">
+           <React.Fragment>
                 <Snackbar
                     anchorOrigin={{ vertical: 'center', horizontal: 'center' }}
                     open={this.state.SnackbarOpen}
@@ -173,7 +173,7 @@ export default class Icons extends React.Component {
                     ]}
                 />
 
-
+<div className="Iconbody">
                 <div className="iconf">
                     <Tooltip title="Notification" interactive>
                         <IconButton edge="start" color="inherit" >
@@ -213,11 +213,11 @@ export default class Icons extends React.Component {
                                         <MenuList>
                                             <div className="colorCard">
                                                 {
-                                                    this.state.list.map((row)=>(
-                                                        <div className="colorBody" style={{backgroundColor:row.Code}}onClick={() => this.handelColor(row.Code)}></div>
-    
+                                                    this.state.list.map((row) => (
+                                                        <div className="colorBody" style={{ backgroundColor: row.Code }} onClick={() => this.handelColor(row.Code)}></div>
+
                                                     ))}
-                                                
+
                                             </div>
                                         </MenuList>
                                     </ClickAwayListener>
@@ -228,8 +228,11 @@ export default class Icons extends React.Component {
                 </div>
 
                 <div className="iconf">
-                <Image />
+                    <Image noteData={this.props.noteId}  />
                 </div>
+
+
+
 
                 <div className="iconf">
                     <Tooltip title="Archive" interactive>
@@ -238,6 +241,10 @@ export default class Icons extends React.Component {
                         </IconButton>
                     </Tooltip>
                 </div>
+
+
+
+
 
                 <div className="iconf">
                     <Tooltip title="More" interactive>
@@ -251,9 +258,7 @@ export default class Icons extends React.Component {
                             <MoreVertOutlinedIcon fontSize="small" color="inherit" />
                         </IconButton>
                     </Tooltip>
-                </div>
 
-                <div>
                     <Popper open={open} anchorEl={this.anchorEl} transition disablePortal>
                         {({ TransitionProps, placement }) => (
                             <Grow
@@ -274,11 +279,13 @@ export default class Icons extends React.Component {
                         )}
                     </Popper>
                 </div>
-                <div><Collaborater collabaroterState={this.state.collaboraterHandel} Id={this.props.noteId} closeMethod={this.handleCollaboraterClose} /></div>
+                </div >
+                <Collaborater collabaroterState={this.state.collaboraterHandel} Id={this.props.noteId} closeMethod={this.handleCollaboraterClose} />
                 {/* <div> <AddColor togelColorMenu={this.state.colorHandel}  togelColorMethod={this.handleToggleColor}/></div> */}
-               
 
-            </div >
+
+           
+            </React.Fragment>
 
         );
     }

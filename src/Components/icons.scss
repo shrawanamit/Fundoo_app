@@ -2,10 +2,12 @@
 .Iconbody{
     display: flex;
     flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
    
 }
 .iconf{
-    padding-left: 8px;
+    
     opacity: 0.81;
  }
  .CollaboretarBody{
@@ -17,6 +19,9 @@
     border-radius: 50%;
     padding-left: 10px;
     opacity: 0.71;
+ }
+ .iconPart1{
+     width: 60%;
  }
  .dilogAction{
      height: 60px;
