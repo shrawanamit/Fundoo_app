@@ -123,7 +123,7 @@ export default class DisplayNote extends React.Component {
                         <div className="displayCollaborater">
                               {row.collaborators.map((object) => (
                                    <div className="collaboraterBody">
-                                      {object.email}
+                                      {object.email[0]}
                                    </div>
                               ))}
                            

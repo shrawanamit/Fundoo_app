@@ -137,14 +137,27 @@
     padding:1%;
 }
 .displayCollaborater{
-    width: 97%;
+    width: 95%;
     min-height: 0px;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    padding-left: 8px;
+    padding: 8px;
     font-size: smaller;
     overflow: hidden;
+}
+.collaboraterBody{
+    height:23px;
+    width: 23px;
+    border: 1px solid white;
+    /* align-items: center; */
+    /* align-content: center; */
+    /* justify-content: center; */
+    // align-text: c;
+    border-radius: 50%;
+    text-align: center;
+    background-color:gainsboro;
+    margin: 1%;
 }
 
 @media only screen and (max-width: 500px) {

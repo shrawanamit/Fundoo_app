@@ -14,6 +14,7 @@ import Divider from '@material-ui/core/Divider';
 import AddIcon from '@material-ui/icons/Add';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CloseIcon from '@material-ui/icons/Close';
+import Checkbox from '@material-ui/core/Checkbox';
 
 let services = new NoteService();
 
@@ -33,18 +34,63 @@ export default class CreateNote extends React.Component {
             addListItem: true,
             listItem: '',
             checklist: null,
-            items: []
+            list: [
+                {
+                    itemName: '',
+                    isDeleted: '',
+                    notesId: '',
+                    status: '',
+                }
+            ],
+            inputItemValue: '',
+            
+            check: 'open',
+            items: [],
 
         };
     }
 
+    // checkCheckBox = () => {
+    //     this.setState({ checkBox: false });
+    // }
 
+    onInputChange(e) {
+        this.setState({
+            inputItemValue: e.target.value,
+        });
+    }
+    addItem() {
+
+        let items = this.state.items;
+        items.push({
+            itemName: this.state.inputItemValue,
+            isDeleted: false,
+            notesId: '',
+            status: 'open',
+        });
+        this.setState({
+            items
+        });
+
+        this.setState({ addListItem: false });
+        console.log("allitem", items);
+    }
+    handelChangeList = (arrayObjevt) => {
+
+        this.setState({
+            // list.itemName:arrayObjevt,
+            // list.status: this.state.check,
+        })
+
+    };
+
+    popItem = () => {
+        let items = this.state.items;
+    }
     SnackbarClose = (event) => {
         this.setState({ SnackbarOpen: false });
     }
-    addListDisplay = () => {
-        this.setState({ addListItem: false });
-    }
+
 
     handleChangeText = (event) => {
         this.setState({
@@ -60,31 +106,23 @@ export default class CreateNote extends React.Component {
     }
 
 
-    addListItem = () => {
-        let items = this.state.items;
-        items.push(this.state.listItem);
-        this.setState({
-            items
-        });
-    }
+
 
     Createnote = () => {
 
-
-
-        this.setState({
-            checklist: JSON.stringify([{
-                itemName: this.state.items,
-                status: "open",
-                isDeleted: false,
-                notesId: "",
-            }])
-        });
+        // this.setState({
+        //     checklist: JSON.stringify([{
+        //         itemName: this.state.items,
+        //         status: "open",
+        //         isDeleted: false,
+        //         notesId: "",
+        //     }])
+        // });
 
         const data = new FormData();
         data.append('title', this.state.title);
         data.append('description', this.state.description);
-        data.append('checklist', this.state.checklist);
+        data.append('checklist', JSON.stringify(this.state.items));
 
         services
             .CreateNote(data)
@@ -160,7 +198,6 @@ export default class CreateNote extends React.Component {
                         </div>
                     </div> :
                     <div className="noteBody">
-
                         <div className="title">
                             <InputBase
                                 placeholder="Title"
@@ -180,55 +217,106 @@ export default class CreateNote extends React.Component {
                                     value={this.state.description}
                                     onChange={this.handleChangeText}
                                 />
-                            </div> : this.state.addListItem ?
+                            </div> :
+                            // this.state.addListItem ?
+                            <div>
+                                <Divider />
                                 <div>
-                                    <Divider />
-                                    <div className="listContener" onClick={() => this.addListDisplay()}>
-                                        <div className="checkList">
-                                            <IconButton edge="start" color="inherit" >
-                                                <AddIcon color="inherit" fontSize="small" />
-                                            </IconButton>
-                                        </div>
-                                        <div className="listItem" >
-                                            <InputBase
-                                                placeholder="List Item"
-                                                fullWidth
-                                                name="description"
+                                    {this.state.items.map((value) => (
 
-                                            />
+                                        <div className="listContener">
+                                            <Divider />
+                                            <div className="checkList">
+                                                <IconButton edge="start" color="inherit" style={{ opacity: 0.71 }} name='check' onClick={this.handelChangeList} >
+                                                    <CheckBoxOutlineBlankIcon fontSize="small" color="inherit" />
+                                                </IconButton>
+
+
+                                            </div>
+                                            <div className="listItem" >
+
+                                                {/* {value} */}
+                                                <InputBase
+                                                    placeholder="..."
+                                                    fullWidth
+                                                    type="Text"
+                                                    multiline
+                                                    name="inputItemListValue"
+                                                    defaultValue={value.itemName}
+                                                    onChange={(value) => this.handelChangeList(value)}
+                                                />
+                                                {/* {this.setState({items:[]})} */}
+                                            </div>
+                                            <div>
+                                                <IconButton edge="start" color="inherit" style={{ opacity: 0.71 }} onClick={() => this.popItem()}>
+                                                    <CloseIcon fontSize="small" color="inherit" />
+                                                </IconButton>
+                                            </div>
+                                            <Divider />
                                         </div>
-                                       
-                                    </div>
-                                    <Divider/>
-                                </div> :
-                                <div>
-                                     <Divider/>
-                                <div className="listContener">
-                                    <div className="checkList">
-                                        <IconButton edge="start" color="inherit" >
-                                            <CheckBoxOutlineBlankIcon fontSize="small" color="inherit" />
+
+                                    ))}
+
+
+
+                                </div>
+
+
+                                <div className="listContener" >
+                                    <div className="checkList" onClick={() => this.addItem()}>
+                                        <IconButton edge="start" color="inherit" style={{ opacity: 0.71 }}>
+                                            <AddIcon color="inherit" fontSize="small" />
                                         </IconButton>
                                     </div>
                                     <div className="listItem" >
+                                        <InputBase
+                                            placeholder="List Item"
+                                            fullWidth
+                                            name="addItem"
+                                            onChange={(e) => this.onInputChange(e)}
+                                        />
+                                    </div>
+
+                                </div>
+                                <Divider />
+                            </div>}
+
+                        <div>
+                            {this.state.items.map((value) => (
+
+                                <div className="listContener">
+                                    <Divider />
+                                    <div className="checkList">
+                                        <IconButton edge="start" color="inherit" style={{ opacity: 0.71 }} name='check' onClick={this.handelChangeList} >
+                                            <CheckBoxOutlineBlankIcon fontSize="small" color="inherit" />
+                                        </IconButton>
+
+
+                                    </div>
+                                    <div className="listItem" >
+
+                                        {/* {value} */}
                                         <InputBase
                                             placeholder="..."
                                             fullWidth
                                             type="Text"
                                             multiline
-                                            name="listItem"
-                                            value={this.state.listItem}
-                                            onChange={this.handleChangeText}
+                                            name="inputItemListValue"
+                                            defaultValue={value.itemName}
+                                            onChange={(value) => this.handelChangeList(value)}
                                         />
+                                        {/* {this.setState({items:[]})} */}
                                     </div>
                                     <div>
-                                        <IconButton edge="start" color="inherit" >
+                                        <IconButton edge="start" color="inherit" style={{ opacity: 0.71 }} onClick={() => this.popItem()}>
                                             <CloseIcon fontSize="small" color="inherit" />
                                         </IconButton>
                                     </div>
+                                    <Divider />
                                 </div>
-                                <Divider/>
-                                 </div>
-                        }
+
+                            ))}
+                        </div>
 
                         <div className="collaboratorContainer">
                             <div className="collaboratorBody">
