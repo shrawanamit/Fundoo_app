@@ -9,7 +9,9 @@ import NoteService from "../Services/NoteService";
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
-
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import Divider from '@material-ui/core/Divider';
+import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined';
 let services = new NoteService();
 
 
@@ -25,7 +27,9 @@ export default class DisplayNote extends React.Component {
             discrreption: '',
             SnackbarOpen: false,
             SnackbarMessage: '',
-            noteColor: '',
+            noteColor: null,
+            noteCheckLists: [],
+            collaborators: []
         };
     }
 
@@ -38,6 +42,8 @@ export default class DisplayNote extends React.Component {
             title: cardObject.title,
             description: cardObject.description,
             noteColor: cardObject.color,
+            noteCheckLists: cardObject.noteCheckLists,
+            collaborators: cardObject.collaborators
         });
         console.log("======note color===========", this.state.noteColor);
     };
@@ -106,7 +112,7 @@ export default class DisplayNote extends React.Component {
                 {this.state.allNotes.reverse().map((row) => (
                     <div className="getNotes" style={{ backgroundColor: row.color }}>
                         <div className="displayImageContener">
-                                <div className="displayImage"></div>
+                            <div className="displayImage"></div>
                         </div>
                         <div className="titleHidden">
                             <div className="displayTitle" onClick={() => this.handleClickOpen(row)}>
@@ -116,17 +122,38 @@ export default class DisplayNote extends React.Component {
                                 <img src={pintask} class="pinImage" alt="pinTask" />
                             </div>
                         </div>
+
+                        {/* if(row.description != ""){ */}
                         <div className="discreptionHidden">
                             {row.description}
                         </div>
+                        <div>
+                            {row.noteCheckLists.filter((value) => value.status === 'open').map((object) => (
+                                <div className="discreptionHidden">
+                                    <CheckBoxOutlineBlankIcon fontSize="small" color="inherit" style={{ opacity: 0.71 }} />
+                                    <div className="listContener">
+                                        {object.itemName}
+                                    </div>
+                                </div>
+                            ))}
+
+                            {row.noteCheckLists.filter((value) => value.status === 'close').map((object) => (
+                                <div className="discreptionHidden">
+                                    <CheckBoxOutlinedIcon fontSize="small" color="inherit" style={{ opacity: 0.71, cursor: 'pointer' }} />
+                                    <div className="listContener">
+                                        {object.itemName}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
 
                         <div className="displayCollaborater">
-                              {row.collaborators.map((object) => (
-                                   <div className="collaboraterBody">
-                                      {object.email[0]}
-                                   </div>
-                              ))}
-                           
+                            {row.collaborators.map((object) => (
+                                <div className="collaboraterBody">
+                                    {object.email[0]}
+                                </div>
+                            ))}
+
 
                         </div>
                         <div className="getIcons">
@@ -150,15 +177,55 @@ export default class DisplayNote extends React.Component {
                                         value={this.state.title}
                                         onChange={this.handleChangeText}
                                     /></div>
-                                <div className="note1">
-                                    <InputBase
-                                        placeholder="Note"
-                                        fullWidth
-                                        multiline
-                                        name="description"
-                                        value={this.state.description}
-                                        onChange={this.handleChangeText}
-                                    />
+                                {this.state.discrreption !== '' ?
+                                    <div className="note1">
+                                        <InputBase
+                                            placeholder="Note"
+                                            fullWidth
+                                            multiline
+                                            name="description"
+                                            value={this.state.description}
+                                            onChange={this.handleChangeText}
+                                        />
+                                    </div> :
+                                    <div>
+                                        {this.state.noteCheckLists.filter((value) => value.status === 'open').map((object) => (
+                                            <div className="discreptionHidden">
+                                                <CheckBoxOutlineBlankIcon fontSize="small" color="inherit" style={{ opacity: 0.71 }} />
+                                                <div className="listContener">
+                                                    <InputBase
+                                                        fullWidth
+                                                        multiline
+                                                        name="updateList"
+                                                        defaultValue={object.itemName}
+                                                        onChange={this.handleChangeList}
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
+                                        {this.state.noteCheckLists.filter((value) => value.status === 'close').map((object) => (
+                                            <div className="discreptionHidden">
+                                                <CheckBoxOutlinedIcon fontSize="small" color="inherit" style={{ opacity: 0.71, cursor: 'pointer' }} />
+                                                <div className="listContener">
+                                                    <InputBase
+                                                        fullWidth
+                                                        multiline
+                                                        name="updateList"
+                                                        defaultValue={object.itemName}
+                                                        onChange={this.handleChangeList}
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                }
+
+                                <div className="displayCollaborater">
+                                    {this.state.collaborators.map((object) => (
+                                        <div className="collaboraterBody">
+                                            {object.email[0]}
+                                        </div>
+                                    ))}
                                 </div>
                                 <div className="iconsBody">
                                     <div className="iconDiv">

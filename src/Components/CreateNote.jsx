@@ -16,6 +16,7 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CloseIcon from '@material-ui/icons/Close';
 import Checkbox from '@material-ui/core/Checkbox';
 
+
 let services = new NoteService();
 
 
@@ -34,26 +35,26 @@ export default class CreateNote extends React.Component {
             addListItem: true,
             listItem: '',
             checklist: null,
-            list: [
-                {
-                    itemName: '',
-                    isDeleted: '',
-                    notesId: '',
-                    status: '',
-                }
-            ],
             inputItemValue: '',
-            
-            check: 'open',
+            check: 'close',
             items: [],
+            checked:true,
 
         };
     }
 
-    // checkCheckBox = () => {
-    //     this.setState({ checkBox: false });
-    // }
+    handelcheckList = () =>{
+        this.setState({checked : !this.state.checked});
 
+        if(this.state.checked)
+        {
+            this.setState({check:'open' })
+        }
+        else{
+            this.setState({check:'close' })
+        }
+       console.log("check",this.state.check);
+    }
     onInputChange(e) {
         this.setState({
             inputItemValue: e.target.value,
@@ -66,13 +67,12 @@ export default class CreateNote extends React.Component {
             itemName: this.state.inputItemValue,
             isDeleted: false,
             notesId: '',
-            status: 'open',
+            status: this.state.check,
         });
         this.setState({
-            items
+            items,
+            addListItem: false
         });
-
-        this.setState({ addListItem: false });
         console.log("allitem", items);
     }
     handelChangeList = (arrayObjevt) => {
@@ -106,18 +106,7 @@ export default class CreateNote extends React.Component {
     }
 
 
-
-
     Createnote = () => {
-
-        // this.setState({
-        //     checklist: JSON.stringify([{
-        //         itemName: this.state.items,
-        //         status: "open",
-        //         isDeleted: false,
-        //         notesId: "",
-        //     }])
-        // });
 
         const data = new FormData();
         data.append('title', this.state.title);
@@ -222,12 +211,12 @@ export default class CreateNote extends React.Component {
                             <div>
                                 <Divider />
                                 <div>
-                                    {this.state.items.map((value) => (
+                                    {this.state.items.filter((value) => value.status=== 'open').map((value) => (
 
                                         <div className="listContener">
                                             <Divider />
                                             <div className="checkList">
-                                                <IconButton edge="start" color="inherit" style={{ opacity: 0.71 }} name='check' onClick={this.handelChangeList} >
+                                                <IconButton edge="start" color="inherit" style={{ opacity: 0.71 }} name='check' onClick={this.handelcheckList} >
                                                     <CheckBoxOutlineBlankIcon fontSize="small" color="inherit" />
                                                 </IconButton>
 
@@ -256,12 +245,7 @@ export default class CreateNote extends React.Component {
                                         </div>
 
                                     ))}
-
-
-
                                 </div>
-
-
                                 <div className="listContener" >
                                     <div className="checkList" onClick={() => this.addItem()}>
                                         <IconButton edge="start" color="inherit" style={{ opacity: 0.71 }}>
@@ -280,18 +264,14 @@ export default class CreateNote extends React.Component {
                                 </div>
                                 <Divider />
                             </div>}
-
                         <div>
-                            {this.state.items.map((value) => (
-
+                            {this.state.items.filter((value) => value.status=== 'close').map((value) => (
                                 <div className="listContener">
                                     <Divider />
                                     <div className="checkList">
-                                        <IconButton edge="start" color="inherit" style={{ opacity: 0.71 }} name='check' onClick={this.handelChangeList} >
-                                            <CheckBoxOutlineBlankIcon fontSize="small" color="inherit" />
+                                        <IconButton edge="start" color="inherit" style={{ opacity: 0.71 }} name='check' onClick={this.handelcheckList} >
+                                            <CheckBoxOutlinedIcon fontSize="small" color="inherit" />
                                         </IconButton>
-
-
                                     </div>
                                     <div className="listItem" >
 
