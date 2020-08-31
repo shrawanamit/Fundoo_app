@@ -1,5 +1,5 @@
 import React from 'react';
-import "./signIn.scss";
+import "../SCSS/signIn.scss";
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';

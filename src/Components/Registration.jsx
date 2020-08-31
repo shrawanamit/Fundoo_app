@@ -1,5 +1,5 @@
 import React from 'react';
-import "./registration.scss";
+import "../SCSS/registration.scss";
 import Link from '@material-ui/core/Link';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';

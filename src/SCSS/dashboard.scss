@@ -76,13 +76,20 @@ display: flex;
 flex-direction: column;
 width: 280px;
 height: calc(100%-64px);
-overflow: hidden;
-border-radius: 0%,50%,50%,0%;
+// overflow: hidden;
+// border-radius: 0%,50%,50%,0%;
 z-index: 1;
-//transition: width 2s;
-&:focus-visible{
-    border:1px solid orange;
+transition: width 1s;
+.note{
+    
+     width:100%;
+ border-radius: 0%,50%,50%,0%;
+ overflow: hidden;
+    
+     
+    
 }
+
 
 }
 .sideNav1{
@@ -90,25 +97,20 @@ display: flex;
 flex-direction: column;
 width: 55px;
 height: calc(100%-64px);
-overflow: hidden;
-border-radius: 50%;
 z-index: 1;
-//transition: width 2s;
+.note{
+    border-radius: 50%;
+    overflow: hidden;
+}
+}
+.note :focus{
+background-color:#feefc3;
 }
 
 .iconsBody{
     padding: 8px 16px 8px 16px;
 }
-.note{
-    padding-left: 0px;
-    width:100%;
-    display:flex;
-    flex-direction: column;
-    border: 1px solid transparent;
-    border-radius: 0px 30px 30px 0px;
-    overflow: hidden;
-    
-}
+
 
 .Logo{
     width: 40px;
@@ -124,6 +126,7 @@ z-index: 1;
 .drawer{
     display: flex;
     flex-grow: 1;
+    position: relative;
 }
 
 @media only screen and (max-width: 500px) {
@@ -139,6 +142,9 @@ z-index: 1;
     }
     .sideNav{
        z-index: 3;
+       position: fixed;
+       background-color: whitesmoke;
+       height: 100vh;
     }
     .searchBarContainer{
         background-color: rgb(255, 255, 255);

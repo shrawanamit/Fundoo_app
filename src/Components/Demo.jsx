@@ -1,7 +1,7 @@
 import React from "react";
 import { StylesProvider } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import "./styles.css";
+import "../SCSS/styles.scss";
 
 export default class Demo extends React.Component {
     render(){

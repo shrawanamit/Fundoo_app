@@ -1,5 +1,5 @@
 import React from 'react';
-import "./displayNote.scss";
+import "../SCSS/displayNote.scss";
 import Icons from './Icons.jsx';
 import InputBase from '@material-ui/core/InputBase';
 import pintask from "../assetes/pintask.svg";
@@ -12,7 +12,11 @@ import Button from '@material-ui/core/Button';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import Divider from '@material-ui/core/Divider';
 import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined';
+import Config from "../Configuration/config";
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+
 let services = new NoteService();
+const baseURl = Config.imageBaseURl;
 
 
 export default class DisplayNote extends React.Component {
@@ -29,7 +33,9 @@ export default class DisplayNote extends React.Component {
             SnackbarMessage: '',
             noteColor: null,
             noteCheckLists: [],
-            collaborators: []
+            collaborators: [],
+            imageUrl: '',
+            newImageUrl: '',
         };
     }
 
@@ -43,7 +49,8 @@ export default class DisplayNote extends React.Component {
             description: cardObject.description,
             noteColor: cardObject.color,
             noteCheckLists: cardObject.noteCheckLists,
-            collaborators: cardObject.collaborators
+            collaborators: cardObject.collaborators,
+            imageUrl: cardObject.imageUrl,
         });
         console.log("======note color===========", this.state.noteColor);
     };
@@ -111,19 +118,24 @@ export default class DisplayNote extends React.Component {
                 />
                 {this.state.allNotes.reverse().map((row) => (
                     <div className="getNotes" style={{ backgroundColor: row.color }}>
-                        <div className="displayImageContener">
-                            <div className="displayImage"></div>
+                        <div className="pin">
+                            <img src={pintask} class="pinImage" alt="pinTask" />
                         </div>
+                        {row.imageUrl.includes("client") ?
+                            <div className="displayImageContener">
+                                <img src={baseURl + row.imageUrl.replace("client", "")} alt="uploaded image" className="displayImage" />
+
+                            </div> :
+                            <div className="displayImageContener">
+                            {/* <img src={baseURl + row.imageUrl} className="displayImage" /> */}
+
+                        </div> 
+                        }
                         <div className="titleHidden">
                             <div className="displayTitle" onClick={() => this.handleClickOpen(row)}>
                                 {row.title}
                             </div>
-                            <div className="pinIcons">
-                                <img src={pintask} class="pinImage" alt="pinTask" />
-                            </div>
                         </div>
-
-                        {/* if(row.description != ""){ */}
                         <div className="discreptionHidden">
                             {row.description}
                         </div>
@@ -140,7 +152,7 @@ export default class DisplayNote extends React.Component {
                             {row.noteCheckLists.filter((value) => value.status === 'close').map((object) => (
                                 <div className="discreptionHidden">
                                     <CheckBoxOutlinedIcon fontSize="small" color="inherit" style={{ opacity: 0.71, cursor: 'pointer' }} />
-                                    <div className="listContener">
+                                    <div className="listContenercheked">
                                         {object.itemName}
                                     </div>
                                 </div>
@@ -168,6 +180,15 @@ export default class DisplayNote extends React.Component {
                         onClose={this.handleClose} >
                         <DialogContent>
                             <div className="dilogBody">
+                                {this.state.imageUrl.includes("client") ?
+                                    <div className="displayImageUpdate">
+                                        <img src={baseURl + this.state.imageUrl.replace("client", "")} alt="uploaded image" className="updatedisplayImage" />
+                                        <div className="deleteIcon">
+                                            <DeleteOutlineIcon />
+                                        </div>
+                                    </div> :
+                                    <div></div>
+                                }
                                 <div className="title">
                                     <InputBase
                                         placeholder="Title"
@@ -177,7 +198,7 @@ export default class DisplayNote extends React.Component {
                                         value={this.state.title}
                                         onChange={this.handleChangeText}
                                     /></div>
-                                {this.state.discrreption !== '' ?
+                                {this.state.description !== '' ?
                                     <div className="note1">
                                         <InputBase
                                             placeholder="Note"
@@ -206,7 +227,7 @@ export default class DisplayNote extends React.Component {
                                         {this.state.noteCheckLists.filter((value) => value.status === 'close').map((object) => (
                                             <div className="discreptionHidden">
                                                 <CheckBoxOutlinedIcon fontSize="small" color="inherit" style={{ opacity: 0.71, cursor: 'pointer' }} />
-                                                <div className="listContener">
+                                                <div className="listContenercheked" >
                                                     <InputBase
                                                         fullWidth
                                                         multiline

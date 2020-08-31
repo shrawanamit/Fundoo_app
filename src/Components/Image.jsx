@@ -23,13 +23,19 @@ export default class Image extends React.Component {
        
         console.log("selcted file",this.state.selectedFile);
    
-        const data = new FormData()
-        data.append('file', this.state.selectedFile);
-        data.append('noteId',this.props.noteData.id);
-        data.append('title',this.props.noteData.title);
-        data.append('description',this.props.noteData.description);
-        
-        services
+      
+        if(this.props.noteData === undefined)
+        {
+            this.props.addImageOncreateNote(this.state.selectedFile);
+        }
+        else{
+            const data = new FormData()
+            data.append('file', this.state.selectedFile);
+            data.append('noteId',this.props.noteData.id);
+            data.append('title',this.props.noteData.title);
+            data.append('description',this.props.noteData.description);
+            
+            services
             .updateNote(data)
             .then(res => { 
                 console.log("=====",res)
@@ -37,6 +43,8 @@ export default class Image extends React.Component {
             .catch((err) => {
                 console.log(err);
             });
+        }
+       
     }
 
 

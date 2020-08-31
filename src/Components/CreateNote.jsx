@@ -1,5 +1,5 @@
 import React from 'react';
-import "./createNote.scss";
+import "../SCSS/createNote.scss";
 import Icons from './Icons.jsx';
 import InputBase from '@material-ui/core/InputBase';
 import Button from '@material-ui/core/Button';
@@ -15,6 +15,7 @@ import AddIcon from '@material-ui/icons/Add';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CloseIcon from '@material-ui/icons/Close';
 import Checkbox from '@material-ui/core/Checkbox';
+import Collaborator from './Collaborator';
 
 
 let services = new NoteService();
@@ -39,53 +40,65 @@ export default class CreateNote extends React.Component {
             check: 'close',
             items: [],
             checked:true,
+            colorCode:'',
+            collaboraterData:[],
+            displayAllNote:'',
+            imageData:''
 
         };
     }
 
-    handelcheckList = () =>{
-        this.setState({checked : !this.state.checked});
+    handelcheckList = (value,index) =>{
+        const items =[...this.state.items];
+       
+       if(value.status === 'open')
+       {
+          items[index].status='close'
+          this.setState({
+              items:items
+          })
+       }
+       else{
+        items[index].status='open'
+        this.setState({
+            items:items
+        })
 
-        if(this.state.checked)
-        {
-            this.setState({check:'open' })
-        }
-        else{
-            this.setState({check:'close' })
-        }
-       console.log("check",this.state.check);
+       }
     }
-    onInputChange(e) {
+    onInputChange = (e)=> {
+       
         this.setState({
             inputItemValue: e.target.value,
-        });
-    }
-    addItem() {
 
-        let items = this.state.items;
-        items.push({
+        });
+        console.log(e.target.value,"mmmm",this.state.inputItemValue);
+        
+    }
+    addItem = async(e)=> {
+        e.preventDefault();
+        let items = [...this.state.items];
+        await items.push({
             itemName: this.state.inputItemValue,
             isDeleted: false,
             notesId: '',
-            status: this.state.check,
+            status: 'open',
         });
+       
         this.setState({
-            items,
-            addListItem: false
+            items:items,
+            addListItem: false,
+            inputItemValue:" "
         });
+       
         console.log("allitem", items);
     }
-    handelChangeList = (arrayObjevt) => {
-
+    popItem = (value,index) =>{
+        const items =[...this.state.items];
+        items.splice(index,1);
         this.setState({
-            // list.itemName:arrayObjevt,
-            // list.status: this.state.check,
+            items:items
         })
-
-    };
-
-    popItem = () => {
-        let items = this.state.items;
     }
     SnackbarClose = (event) => {
         this.setState({ SnackbarOpen: false });
@@ -105,14 +118,38 @@ export default class CreateNote extends React.Component {
         this.setState({ listOpen: false });
     }
 
+     changeColor = (colorCode) =>{
+        this.setState
+            ({
+                colorCode:colorCode,
+            })
+     }
+     addColoboratorOnCreateNote= async(collaboraterData)=>{
+            console.log("collaborater====Data",collaboraterData);
+            await this.setState
+            ({
+                collaboraterData:[...collaboraterData],
+            })
+            console.log("email=====",this.state.collaboraterData);
+     }
+     addImageOncreateNote=(imageData,displayAllNote)=>{
+        this.setState({
+            imageData:imageData,
+            displayAllNote:displayAllNote
+        })
+    //    console.log("image iiii data",this.state.displayAllNote());
+     }
 
+     
     Createnote = () => {
 
         const data = new FormData();
         data.append('title', this.state.title);
         data.append('description', this.state.description);
+        data.append('color',this.state.colorCode);
         data.append('checklist', JSON.stringify(this.state.items));
-
+        data.append('collaberators', JSON.stringify(this.state.collaboraterData));
+        data.append('file',this.state.imageData);
         services
             .CreateNote(data)
             .then((json) => {
@@ -123,9 +160,10 @@ export default class CreateNote extends React.Component {
                         noteOpen: true,
                         openList: true,
                     });
-
+                    // this.state.colorCode;
                 }
                 console.log("data", json);
+                this.state.displayAllNote();
             })
             .catch((err) => {
                 console.log(err);
@@ -147,11 +185,6 @@ export default class CreateNote extends React.Component {
                             color="inherit" onClick={this.SnackbarClose}>x</IconButton>
                     ]}
                 />
-                <div className="collaboratorContainer">
-                    <div className="ImageBody">
-
-                    </div>
-                </div>
                 {this.state.noteOpen ?
                     <div className="noteBody1" onClick={() => this.createNoteDisplay()}>
                         <div className="note2">
@@ -186,7 +219,10 @@ export default class CreateNote extends React.Component {
                             </div>
                         </div>
                     </div> :
-                    <div className="noteBody">
+                    <div className="noteBody" style={{backgroundColor:this.state.colorCode}}>
+                        <div className="addImage">
+                             <img src={this.state.imageData.name} className="displayImage"/>
+                        </div>
                         <div className="title">
                             <InputBase
                                 placeholder="Title"
@@ -211,12 +247,12 @@ export default class CreateNote extends React.Component {
                             <div>
                                 <Divider />
                                 <div>
-                                    {this.state.items.filter((value) => value.status=== 'open').map((value) => (
+                                    {this.state.items.filter((value) => value.status=== 'open').map((value,index) => (
 
                                         <div className="listContener">
                                             <Divider />
                                             <div className="checkList">
-                                                <IconButton edge="start" color="inherit" style={{ opacity: 0.71 }} name='check' onClick={this.handelcheckList} >
+                                                <IconButton edge="start" color="inherit" style={{ opacity: 0.71 }} name='check' onClick={()=>this.handelcheckList(value,index)} >
                                                     <CheckBoxOutlineBlankIcon fontSize="small" color="inherit" />
                                                 </IconButton>
 
@@ -237,7 +273,7 @@ export default class CreateNote extends React.Component {
                                                 {/* {this.setState({items:[]})} */}
                                             </div>
                                             <div>
-                                                <IconButton edge="start" color="inherit" style={{ opacity: 0.71 }} onClick={() => this.popItem()}>
+                                                <IconButton edge="start" color="inherit" style={{ opacity: 0.71 }} onClick={() => this.popItem(value,index)}>
                                                     <CloseIcon fontSize="small" color="inherit" />
                                                 </IconButton>
                                             </div>
@@ -247,7 +283,7 @@ export default class CreateNote extends React.Component {
                                     ))}
                                 </div>
                                 <div className="listContener" >
-                                    <div className="checkList" onClick={() => this.addItem()}>
+                                    <div className="checkList" onClick={(e) => this.addItem(e)}>
                                         <IconButton edge="start" color="inherit" style={{ opacity: 0.71 }}>
                                             <AddIcon color="inherit" fontSize="small" />
                                         </IconButton>
@@ -256,8 +292,10 @@ export default class CreateNote extends React.Component {
                                         <InputBase
                                             placeholder="List Item"
                                             fullWidth
-                                            name="addItem"
-                                            onChange={(e) => this.onInputChange(e)}
+                                            multiline
+                                            name="inputItemValue"
+                                            value={this.state.inputItemValue}
+                                            onChange={ this.onInputChange}
                                         />
                                     </div>
 
@@ -265,17 +303,15 @@ export default class CreateNote extends React.Component {
                                 <Divider />
                             </div>}
                         <div>
-                            {this.state.items.filter((value) => value.status=== 'close').map((value) => (
+                            {this.state.items.filter((value) => value.status=== 'close').map((value,index) => (
                                 <div className="listContener">
                                     <Divider />
                                     <div className="checkList">
-                                        <IconButton edge="start" color="inherit" style={{ opacity: 0.71 }} name='check' onClick={this.handelcheckList} >
+                                        <IconButton edge="start" color="inherit" style={{ opacity: 0.71 }} name='check' onClick={()=>this.handelcheckList(value,index)} >
                                             <CheckBoxOutlinedIcon fontSize="small" color="inherit" />
                                         </IconButton>
                                     </div>
                                     <div className="listItem" >
-
-                                        {/* {value} */}
                                         <InputBase
                                             placeholder="..."
                                             fullWidth
@@ -285,28 +321,28 @@ export default class CreateNote extends React.Component {
                                             defaultValue={value.itemName}
                                             onChange={(value) => this.handelChangeList(value)}
                                         />
-                                        {/* {this.setState({items:[]})} */}
                                     </div>
                                     <div>
-                                        <IconButton edge="start" color="inherit" style={{ opacity: 0.71 }} onClick={() => this.popItem()}>
+                                        <IconButton edge="start" color="inherit" style={{ opacity: 0.71 }} onClick={() => this.popItem(value,index)}>
                                             <CloseIcon fontSize="small" color="inherit" />
                                         </IconButton>
                                     </div>
                                     <Divider />
                                 </div>
-
                             ))}
                         </div>
 
-                        <div className="collaboratorContainer">
-                            <div className="collaboratorBody">
-
+                        <div className="displayCollaborater">
+                            {this.state.collaboraterData.map((row)=>(
+                            <div className="collaboraterBody">
+                                {row.email[0]}
                             </div>
+                                 )) }
                         </div>
                         <div className="iconsBody">
                             <div className="iconDiv">
                                 <div className="iconPart1">
-                                    <Icons />
+                                    <Icons changeColor={this.changeColor} addColoboratorOnCreateNote={this.addColoboratorOnCreateNote} addImageOncreateNote={this.addImageOncreateNote}/>
                                 </div>
                                 <div className="iconPart2">
                                     <Button onClick={this.Createnote}>Close</Button>

@@ -41,32 +41,24 @@
     box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302), 0 2px 6px 2px rgba(60,64,67,0.149);
     display: flex;
     flex-direction: column;
-
 }
-
 
 .title{
     font-size: 1rem;
     font-weight: 500;
-    // line-height: 1.5rem;
-    // min-height: 46px;
-    padding: 8px 16px 8px 16px;
+    padding: 8px 16px 4px 16px;
 }
 .note1{
     font-size: 1rem;
     font-weight: 500;
-    // line-height: 1.5rem;
      min-height: 0px;
-     
-    padding: 8px 16px 8px 16px;
+    padding: 4px 16px 4px 16px;
 }
-
-
-
 .iconDiv{
     display:flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
 }
 .getAllNote{
     display: flex;
@@ -113,13 +105,27 @@
     width: 15%;
     height: 90%;
 }
+.addImage{
+    width: 100%;
+    min-height: 0px;
+    max-height: 244px;
+    display: flex;
+}
+
+.displayImage{
+ width: 100%;
+ height: 100%;
+}
+.iconsBody {
+    padding: 4px 16px 8px 16px;
+}
 
 @media only screen and (max-width: 500px) {
     .getAllNote{ 
      width: 295px;
     }
     .mainBody{
-        padding-left: 60px;
+        padding-left: 0px;
     }
     .noteBody{
         width:295px;
@@ -129,6 +135,18 @@
     }
     .iconsBody {
         padding: 8px 0px 8px 0px;
+    }
+    .iconPart2{
+        padding: 0px;
+    }
+    .iconPart1{
+        width: 80%;
+        padding-left: 10px;
+    }
+    .iconDiv{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
     }
    
   }

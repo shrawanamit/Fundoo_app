@@ -1,5 +1,5 @@
 import React from 'react';
-import "./dashboard.scss";
+import "../SCSS/dashboard.scss";
 import IconButton from '@material-ui/core/IconButton';
 import MenuOutlinedIcon from '@material-ui/icons/MenuOutlined';
 import Typography from '@material-ui/core/Typography';
@@ -8,7 +8,6 @@ import InputBase from '@material-ui/core/InputBase';
 import logo from "../assetes/AccountLogo.jpg";
 import CreateNote from './CreateNote.jsx';
 import DisplayNote from "./DisplayNote.jsx";
-import "./dashboard.scss";
 import Logo from "../assetes/fundooLogo.png";
 import NoteOutlinedIcon from '@material-ui/icons/NoteOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
@@ -70,7 +69,7 @@ export default class DashBord extends React.Component {
 
                         </div>
                         <div className="icon3"></div>
-                         <div className="icon2">
+                        <div className="icon2">
                             <div className="account">
                                 <img src={logo} class="logoImage" alt="pinTask" />
                             </div>
@@ -126,10 +125,7 @@ export default class DashBord extends React.Component {
                     </div>
                     <div className="mainBody">
                         <CreateNote />
-                        <div className="displayAllNotes">
-                            <DisplayNote />
-                        </div>
-
+                        <DisplayNote />
                     </div>
                 </div>
             </div>

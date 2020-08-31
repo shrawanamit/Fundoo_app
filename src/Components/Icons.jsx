@@ -1,5 +1,5 @@
 import React from 'react';
-import './icons.scss'
+import '../SCSS/icons.scss'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
@@ -49,6 +49,7 @@ export default class Icons extends React.Component {
             noteList: '',
             purpel: "#fdcfe8",
             responseData: '',
+            createNote: null,
             list: [
                 { name: "purpael", Code: "#9B30FF" },
                 { name: "pink", Code: "#fdcfe8" },
@@ -67,9 +68,10 @@ export default class Icons extends React.Component {
     }
 
 
+
     deleteNote = async () => {
         await this.setState({ NoteId: this.props.noteId.id });
-        
+
         const apiDataToDeleteNote = {
             isDeleted: this.state.delet,
             noteIdList: [this.state.NoteId]
@@ -92,24 +94,33 @@ export default class Icons extends React.Component {
 
 
     handelColor = async (colorCode) => {
+        if ( this.props.noteId === undefined) {
+            this.props.changeColor(colorCode,this.props.refraceNote);
+            console.log("color code", colorCode);
+          
+        }
+        else{
+            await this.setState({ noteList: this.props.noteId.id });
+            const apiRequestData = {
+                color: colorCode,
+                noteIdList: [this.state.noteList]
+            };
+           
+            services
+                .addColorToNote(apiRequestData)
+                .then((response) => {
+                    console.log(response);
+                    this.props.refraceNote();
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
 
-        await this.setState({ noteList: this.props.noteId.id });
-        const apiRequestData = {
-            color: colorCode,
-            noteIdList: [this.state.noteList]
-        };
-        console.log("color code", apiRequestData);
-        services
-            .addColorToNote(apiRequestData)
-            .then((response) => {
-                console.log(response);
-                this.props.refraceNote();
-            })
-            .catch((err) => {
-                console.log(err);
-            });
 
     };
+
+
     SnackbarClose = (event) => {
         this.setState({ SnackbarOpen: false });
     }
@@ -160,7 +171,7 @@ export default class Icons extends React.Component {
 
         return (
 
-           <React.Fragment>
+            <React.Fragment>
                 <Snackbar
                     anchorOrigin={{ vertical: 'center', horizontal: 'center' }}
                     open={this.state.SnackbarOpen}
@@ -173,118 +184,114 @@ export default class Icons extends React.Component {
                     ]}
                 />
 
-<div className="Iconbody">
-                <div className="iconf">
-                    <Tooltip title="Notification" interactive>
-                        <IconButton edge="start" color="inherit" >
-                            <NotificationsActiveIcon fontSize="small" color="inherit" />
-                        </IconButton>
-                    </Tooltip>
-                </div>
-                <div className="iconf">
-                    <Tooltip title="Collaborater" interactive>
-                        <IconButton edge="start" color="inherit" onClick={() => this.handleCollaboraterOpen()} >
-                            <PersonAddOutlinedIcon fontSize="small" color="inherit" />
-                        </IconButton>
-                    </Tooltip>
-                </div>
+                <div className="Iconbody">
+                    <div className="iconf">
+                        <Tooltip title="Notification" interactive>
+                            <IconButton edge="start" color="inherit" >
+                                <NotificationsActiveIcon fontSize="small" color="inherit" />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
+                    <div className="iconf">
+                        <Tooltip title="Collaborater" interactive>
+                            <IconButton edge="start" color="inherit" onClick={() => this.handleCollaboraterOpen()} >
+                                <PersonAddOutlinedIcon fontSize="small" color="inherit" />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
 
-                <div className="iconf">
-                    <Tooltip title="Change Color" interactive>
-                        <IconButton edge="start" color="inherit"
-                            buttonRef={node => {
+                    <div className="iconf">
+                        <Tooltip title="Change Color" interactive>
+                            <IconButton edge="start" color="inherit"
+                                buttonRef={node => {
+                                    this.anchorEl = node;
+                                }}
+                                aria-owns={this.state.colorHandel ? 'menu-list-grow' : undefined}
+                                aria-haspopup="true"
+                                onClick={this.handleAddColorToggle}>
+                                <ColorLensOutlinedIcon fontSize="small" color="inherit" />
+                            </IconButton>
+                        </Tooltip>
+                        <Popper open={this.state.colorHandel} anchorEl={this.anchorEl} transition disablePortal>
+                            {({ TransitionProps, placement }) => (
+                                <Grow
+                                    {...TransitionProps}
+                                    id="menu-list-grow"
+                                    style={{ transform: "translate3d(-60px, -10px, 0px)"}}
+                                >
+                                    <Paper>
+                                        <ClickAwayListener onClickAway={this.handleColorMenuColse}>
+                                            <MenuList>
+                                                <div className="colorCard">
+                                                    {
+                                                        this.state.list.map((row) => (
+                                                            <div className="colorBody" style={{ backgroundColor: row.Code }} onClick={() => this.handelColor(row.Code)}></div>
+
+                                                        ))}
+
+                                                </div>
+                                            </MenuList>
+                                        </ClickAwayListener>
+                                    </Paper>
+                                </Grow>
+                            )}
+                        </Popper>
+                    </div>
+
+                    <div className="iconf">
+                        <Image noteData={this.props.noteId} addImageOncreateNote={this.props.addImageOncreateNote}/>
+                    </div>
+
+
+
+
+                    <div className="iconf">
+                        <Tooltip title="Archive" interactive>
+                            <IconButton edge="start" color="inherit" aria-label="menu"  >
+                                <ArchiveIcon fontSize="small" color="rgba(0, 0, 0, 0.54)" />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
+
+
+
+
+
+                    <div className="iconf">
+                        <Tooltip title="More" interactive>
+                            <IconButton edge="start" color="inherit" buttonRef={node => {
                                 this.anchorEl = node;
                             }}
-                            aria-owns={this.state.colorHandel ? 'menu-list-grow' : undefined}
-                            aria-haspopup="true"
-                            onClick={this.handleAddColorToggle}>
-                            <ColorLensOutlinedIcon fontSize="small" color="inherit" />
-                        </IconButton>
-                    </Tooltip>
-                    <Popper open={this.state.colorHandel} anchorEl={this.anchorEl} transition disablePortal>
-                        {({ TransitionProps, placement }) => (
-                            <Grow
-                                {...TransitionProps}
-                                id="menu-list-grow"
-                                style={{ transformOrigin: placement === 'top' ? 'center top' : 'center bottom' }}
-                            >
-                                <Paper>
-                                    <ClickAwayListener onClickAway={this.handleColorMenuColse}>
-                                        <MenuList>
-                                            <div className="colorCard">
-                                                {
-                                                    this.state.list.map((row) => (
-                                                        <div className="colorBody" style={{ backgroundColor: row.Code }} onClick={() => this.handelColor(row.Code)}></div>
+                                aria-owns={open ? 'menu-list-grow' : undefined}
+                                aria-haspopup="true"
+                                onClick={this.handleToggle} >
 
-                                                    ))}
+                                <MoreVertOutlinedIcon fontSize="small" color="inherit" />
+                            </IconButton>
+                        </Tooltip>
 
-                                            </div>
-                                        </MenuList>
-                                    </ClickAwayListener>
-                                </Paper>
-                            </Grow>
-                        )}
-                    </Popper>
-                </div>
-
-                <div className="iconf">
-                    <Image noteData={this.props.noteId}  />
-                </div>
-
-
-
-
-                <div className="iconf">
-                    <Tooltip title="Archive" interactive>
-                        <IconButton edge="start" color="inherit" aria-label="menu"  >
-                            <ArchiveIcon fontSize="small" color="rgba(0, 0, 0, 0.54)" />
-                        </IconButton>
-                    </Tooltip>
-                </div>
-
-
-
-
-
-                <div className="iconf">
-                    <Tooltip title="More" interactive>
-                        <IconButton edge="start" color="inherit" buttonRef={node => {
-                            this.anchorEl = node;
-                        }}
-                            aria-owns={open ? 'menu-list-grow' : undefined}
-                            aria-haspopup="true"
-                            onClick={this.handleToggle} >
-
-                            <MoreVertOutlinedIcon fontSize="small" color="inherit" />
-                        </IconButton>
-                    </Tooltip>
-
-                    <Popper open={open} anchorEl={this.anchorEl} transition disablePortal>
-                        {({ TransitionProps, placement }) => (
-                            <Grow
-                                {...TransitionProps}
-                                id="menu-list-grow"
-                                style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-                            >
-                                <Paper>
-                                    <ClickAwayListener onClickAway={this.handleClose}>
-                                        <MenuList>
-                                            <MenuItem onClick={this.deleteNote}>Delete note</MenuItem>
-                                            <MenuItem onClick={this.handleClose}>Add Label</MenuItem>
-                                            <MenuItem onClick={this.handleClose}>Add drawing</MenuItem>
-                                        </MenuList>
-                                    </ClickAwayListener>
-                                </Paper>
-                            </Grow>
-                        )}
-                    </Popper>
-                </div>
+                        <Popper open={open} anchorEl={this.anchorEl} transition disablePortal>
+                            {({ TransitionProps, placement }) => (
+                                <Grow
+                                    {...TransitionProps}
+                                    id="menu-list-grow"
+                                    style={{  transform: "translate3d(-10px, -10px, 0px)"  }}
+                                >
+                                    <Paper>
+                                        <ClickAwayListener onClickAway={this.handleClose}>
+                                            <MenuList>
+                                                <MenuItem onClick={this.deleteNote}>Delete note</MenuItem>
+                                                <MenuItem onClick={this.handleClose}>Add Label</MenuItem>
+                                                <MenuItem onClick={this.handleClose}>Add drawing</MenuItem>
+                                            </MenuList>
+                                        </ClickAwayListener>
+                                    </Paper>
+                                </Grow>
+                            )}
+                        </Popper>
+                    </div>
                 </div >
-                <Collaborater collabaroterState={this.state.collaboraterHandel} Id={this.props.noteId} closeMethod={this.handleCollaboraterClose} />
-                {/* <div> <AddColor togelColorMenu={this.state.colorHandel}  togelColorMethod={this.handleToggleColor}/></div> */}
-
-
-           
+                <Collaborater collabaroterState={this.state.collaboraterHandel} Id={this.props.noteId} closeMethod={this.handleCollaboraterClose}  addColoboratorOnCreateNote={this.props.addColoboratorOnCreateNote}/>
             </React.Fragment>
 
         );

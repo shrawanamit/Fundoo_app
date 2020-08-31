@@ -8,7 +8,8 @@
     display: flex;
      flex-direction: row;
      flex-wrap: wrap;
-    //flex-flow: column wrap;
+    align-items: flex-start;
+    justify-content: center;
 }
 
 .getNotes{
@@ -19,73 +20,61 @@
     flex-direction:column;
     border: 1px solid grayscale($color: #979797);
     border-radius: 8px;
-   // position: relative;
-    .getIcons{
-        //visibility: hidden;
-        display: none;
+    position: relative;
+    .Iconbody{
+         display: none;
     }
-    .pinIcons{
+    .pin{
         display: none;
     }
 
 }
-
+.getIcons{
+    min-height: 32px;
+}
 .getNotes{
     &:hover {
-        border: 1px solid transparent;
         border-radius: 8px;
         box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302), 0 2px 6px 2px rgba(60,64,67,0.149);
         
-        .getIcons{
-            display: block;
-            // position: absolute;
-            // bottom: 4px;
-            //visibility: visible;
-            
+        .Iconbody{
+            display: flex;
+            flex-direction: row;
         }
-        .pinIcons{
+        .pin{
             display: block;
-
         }
-        // .getNotes{
-        //     border: 1px solid transparent;
-        //     border-radius: 8px;
-        //     box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302), 0 2px 6px 2px rgba(60,64,67,0.149);
-        // }
       }
 }
-.titleHidden{
-    display: flex;
-    flex-direction: row;
-}
-.pinIcons{
+.pin{
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 12px;
+    top: 6px;
     &:hover {
-        border: 1px solid transparent;
             border-radius: 50%;
             background-color: rgb(230, 228, 228);
             align-items: center;
             align-content: center;
             opacity: 0.99;
-            position: relative;
-            padding-top: 5px;
-            padding-right: 5px;
-            
     }
 }
+.titleHidden{
+    display: flex;
+    flex-direction: row;
+}
+
 
 .pinImage{
     width: 22px;
     height: 22px;
     opacity: 0.71;
-    padding-right: 4px;
     padding-top: 4px;
-    
+    padding-left: 4px;
+    cursor: pointer;
 }
-.pinIcons{
-    display: flex;
-     justify-content: space-between;
-  
-}
+
 .displayTitle{
     width: 87%;
     min-height: 22px;
@@ -103,21 +92,25 @@
 .discreptionHidden{
     display: flex;
     justify-content: flex-start;
-    width: 95%;
+    width: 90%;
     min-height: 0px;
-    padding: 2px 8px 4px 16px;
+    padding: 2px 16px 4px 16px;
     word-break: break-all;
     max-height:100px;
      overflow: hidden;
     align-items: center;
+    text-overflow: ellipsis;
+}
+
+.listContenercheked{
+    padding-left: 8px;
+    text-decoration: line-through;
 }
 .listContener{
     padding-left: 8px;
+    
 }
-
 .dilogBody{
-   // margin:32px auto 16px auto ;
-   // position: relative;
     width: 100%;
     border: 1px solid transparent;
     border-radius: 8px;
@@ -127,19 +120,31 @@
     flex-direction: column;
 }
 .displayImageContener{
-    width: 97%;
+    width: 100%;
     min-height: 0px;
-    max-height: 50px;
-    // padding: 2px;
+    max-height: 166px;
     display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
+    
    
 }
+.displayImageUpdate{
+    width: 100%;
+    min-height: 0px;
+    position: relative;
+}
+.deleteIcon{
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    cursor: pointer;
+}
+.updatedisplayImage{
+    width: 100%;
+}
 .displayImage{
-    width: 32%;
-    height: 49%;
-    padding:1%;
+    width: 100%;
+    height: 99%;
+    border-radius: 8px;
 }
 .displayCollaborater{
     width: 95%;
@@ -147,7 +152,8 @@
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    padding: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
     font-size: smaller;
     overflow: hidden;
 }
@@ -155,10 +161,6 @@
     height:23px;
     width: 23px;
     border: 1px solid white;
-    /* align-items: center; */
-    /* align-content: center; */
-    /* justify-content: center; */
-    // align-text: c;
     border-radius: 50%;
     text-align: center;
     background-color:gainsboro;
@@ -170,6 +172,6 @@
         width: 100%;
     }
      .dilogBody{
-        width:295px;
+        width:100%x;
     }
 }
