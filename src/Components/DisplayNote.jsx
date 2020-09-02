@@ -14,6 +14,7 @@ import Divider from '@material-ui/core/Divider';
 import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined';
 import Config from "../Configuration/config";
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import AddIcon from '@material-ui/icons/Add';
 
 let services = new NoteService();
 const baseURl = Config.imageBaseURl;
@@ -36,6 +37,11 @@ export default class DisplayNote extends React.Component {
             collaborators: [],
             imageUrl: '',
             newImageUrl: '',
+            inputItemValue: '',
+            checkListId:'',
+            notesId:'',
+            status:'',
+            itemName:'',
         };
     }
 
@@ -48,21 +54,67 @@ export default class DisplayNote extends React.Component {
             title: cardObject.title,
             description: cardObject.description,
             noteColor: cardObject.color,
-            noteCheckLists: cardObject.noteCheckLists,
+            noteCheckLists: [...cardObject.noteCheckLists],
             collaborators: cardObject.collaborators,
             imageUrl: cardObject.imageUrl,
         });
-        console.log("======note color===========", this.state.noteColor);
+        console.log("======note check list===========", cardObject.noteCheckLists);
     };
+    // handleCheckList = (checkListObject) => {
+    //     this.setState({
+    //         checkListId: checkListObject.id,
+    //         itemName: checkListObject.itemName,
+    //         notesId: checkListObject.notesId,
+    //         status: checkListObject.status,
+
+    //     });
+    // }
+
+    updateList = (object,index) => {
+       console.log("value ",object,"index",index);
+       const noteCheckLists= [...this.state.noteCheckLists];
+       if(object.status === 'open'){
+           object.status='close';
+           noteCheckLists[index].status='close';
+           this.setState({
+               noteCheckLists:noteCheckLists,
+           })
+       }
+       else{
+        object.status = 'open';
+        noteCheckLists[index].status='open';
+           this.setState({
+               noteCheckLists:noteCheckLists,
+           })
+       }
+
+        
+        const apiRequestData = {
+            checklistId:object.id,
+            itemName: object.itemName,
+            isDeleted:false,
+            notesId: object.notesId,
+            status:object.status,
+        };
+        services
+            .updateList(apiRequestData)
+            .then((json) => {
+                if (json.status === 200) {
+                    console.log(json);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+
     handleChangeText = (event) => {
         this.setState({
             [event.target.name]: event.target.value,
         });
     };
 
-    SnackbarClose = (event) => {
-        this.setState({ SnackbarOpen: false });
-    }
+
     updateNote = () => {
 
         const apiUpdateedInputData = {
@@ -85,6 +137,9 @@ export default class DisplayNote extends React.Component {
             });
     }
 
+    SnackbarClose = (event) => {
+        this.setState({ SnackbarOpen: false });
+    }
     //for fetching  notes from database
     componentDidMount() {
         this.getAllNote();
@@ -117,7 +172,7 @@ export default class DisplayNote extends React.Component {
                     ]}
                 />
                 {this.state.allNotes.reverse().map((row) => (
-                    <div className="getNotes" style={{ backgroundColor: row.color }}>
+                    <div className="getNotes" style={{ backgroundColor: "row.color" }}>
                         <div className="pin">
                             <img src={pintask} class="pinImage" alt="pinTask" />
                         </div>
@@ -127,9 +182,9 @@ export default class DisplayNote extends React.Component {
 
                             </div> :
                             <div className="displayImageContener">
-                            {/* <img src={baseURl + row.imageUrl} className="displayImage" /> */}
+                                <img src={baseURl + '/' + row.imageUrl} className="displayImage" />
 
-                        </div> 
+                            </div>
                         }
                         <div className="titleHidden">
                             <div className="displayTitle" onClick={() => this.handleClickOpen(row)}>
@@ -142,7 +197,7 @@ export default class DisplayNote extends React.Component {
                         <div>
                             {row.noteCheckLists.filter((value) => value.status === 'open').map((object) => (
                                 <div className="discreptionHidden">
-                                    <CheckBoxOutlineBlankIcon fontSize="small" color="inherit" style={{ opacity: 0.71 }} />
+                                    <CheckBoxOutlineBlankIcon fontSize="small" color="inherit" style={{ opacity: 0.71 }} onClick={() => this.handleCheckList(object)} />
                                     <div className="listContener">
                                         {object.itemName}
                                     </div>
@@ -151,7 +206,7 @@ export default class DisplayNote extends React.Component {
 
                             {row.noteCheckLists.filter((value) => value.status === 'close').map((object) => (
                                 <div className="discreptionHidden">
-                                    <CheckBoxOutlinedIcon fontSize="small" color="inherit" style={{ opacity: 0.71, cursor: 'pointer' }} />
+                                    <CheckBoxOutlinedIcon fontSize="small" color="inherit" style={{ opacity: 0.71, cursor: 'pointer' }} onClick={() => this.handleCheckList(object)} />
                                     <div className="listContenercheked">
                                         {object.itemName}
                                     </div>
@@ -210,9 +265,9 @@ export default class DisplayNote extends React.Component {
                                         />
                                     </div> :
                                     <div>
-                                        {this.state.noteCheckLists.filter((value) => value.status === 'open').map((object) => (
+                                        {this.state.noteCheckLists.filter((value) => value.status === 'open').map((object,index) => (
                                             <div className="discreptionHidden">
-                                                <CheckBoxOutlineBlankIcon fontSize="small" color="inherit" style={{ opacity: 0.71 }} />
+                                                <CheckBoxOutlineBlankIcon fontSize="small" color="inherit" style={{ opacity: 0.71 }} onClick={()=>this.updateList(object,index)}/>
                                                 <div className="listContener">
                                                     <InputBase
                                                         fullWidth
@@ -224,9 +279,10 @@ export default class DisplayNote extends React.Component {
                                                 </div>
                                             </div>
                                         ))}
-                                        {this.state.noteCheckLists.filter((value) => value.status === 'close').map((object) => (
+                                        <Divider />
+                                        {this.state.noteCheckLists.filter((value) => value.status === 'close').map((object,index) => (
                                             <div className="discreptionHidden">
-                                                <CheckBoxOutlinedIcon fontSize="small" color="inherit" style={{ opacity: 0.71, cursor: 'pointer' }} />
+                                                <CheckBoxOutlinedIcon fontSize="small" color="inherit" style={{ opacity: 0.71, cursor: 'pointer' }} onClick={()=>this.updateList(object,index)}/>
                                                 <div className="listContenercheked" >
                                                     <InputBase
                                                         fullWidth

@@ -3,6 +3,7 @@ import ImageOutlinedIcon from '@material-ui/icons/ImageOutlined';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import NoteService from "../Services/NoteService";
+
 let services = new NoteService();
 
 export default class Image extends React.Component {
@@ -11,40 +12,37 @@ export default class Image extends React.Component {
         super(props);
         this.state = {
 
-            selectedFile: null
+            selectedFile: null,
+            url:'',
         };
 
     }
     async onChange(e) {
         await this.setState({
             selectedFile: e.target.files[0],
-           
         });
-       
-        console.log("selcted file",this.state.selectedFile);
-   
-      
-        if(this.props.noteData === undefined)
-        {
+        console.log("selcted file not url", this.state.selectedFile);
+
+        if (this.props.noteData === undefined) {
             this.props.addImageOncreateNote(this.state.selectedFile);
         }
-        else{
+        else {
             const data = new FormData()
             data.append('file', this.state.selectedFile);
-            data.append('noteId',this.props.noteData.id);
-            data.append('title',this.props.noteData.title);
-            data.append('description',this.props.noteData.description);
-            
+            data.append('noteId', this.props.noteData.id);
+            data.append('title', this.props.noteData.title);
+            data.append('description', this.props.noteData.description);
+
             services
-            .updateNote(data)
-            .then(res => { 
-                console.log("=====",res)
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+                .updateNote(data)
+                .then(res => {
+                    console.log("=====", res)
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
         }
-       
+
     }
 
 
@@ -55,7 +53,7 @@ export default class Image extends React.Component {
                     <IconButton edge="start" color="inherit"  >
                         <input type="file" id="BtnBrowseHidden" name="file" className="image" accept="image/*" onChange={(e) => this.onChange(e)} />
                         <label for="BtnBrowseHidden" id="LblBrowse">
-                            <ImageOutlinedIcon fontSize="small" color="inherit"  />
+                            <ImageOutlinedIcon fontSize="small" color="inherit" />
                         </label>
                     </IconButton >
                 </Tooltip>

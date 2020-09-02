@@ -8,6 +8,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import FundooService from "../Services/userService";
 import NoteService from '../Services/NoteService';
+import auth from "./Auth";
 let service = new FundooService();
 let serviceNote= new NoteService();
 
@@ -87,7 +88,8 @@ export default class Registration extends React.Component {
             email: this.state.email,
             password: this.state.password,
            
-          };
+          }; 
+
           service. Login(user)
             .then((json) => {
               console.log("responce data==>", json.data.id);
@@ -95,6 +97,10 @@ export default class Registration extends React.Component {
               localStorage.setItem('token', json.data.id);
               if (json.status === 200) {
                 this.setState({ SnackbarOpen: true, SnackbarMessage: 'Login Sucessfull !!' })
+
+                auth.login(()=>{
+                    this.props.history.push("/home/notes");
+                })
               }
             })
             .catch((err) => {

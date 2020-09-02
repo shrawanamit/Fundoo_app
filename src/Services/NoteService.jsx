@@ -19,12 +19,12 @@ export default class NoteService {
           }});
       }
       deleteNote(data){
-        return axiosService.Delete(`${apiUrl}notes/trashNotes`, data,{ headers: {
+        return axiosService.Post(`${apiUrl}notes/trashNotes`, data,{ headers: {
           authorization: token
         }});
       }
       updateNote(data){
-        return axiosService.Update(`${apiUrl}notes/updateNotes`,data, { headers: {
+        return axiosService.Post(`${apiUrl}notes/updateNotes`,data, { headers: {
           authorization: token
         }});
       }
@@ -40,6 +40,11 @@ export default class NoteService {
       }
       addColorToNote(data){
         return axiosService.Post(`${apiUrl}notes/changesColorNotes`,data,{ headers: {
+          authorization: token
+        }});
+      }
+      updateList(data){
+        return axiosService.Post(`${apiUrl}notes/${data.notesId}/checklist/${data.checklistId}/update`,data,{ headers: {
           authorization: token
         }});
       }

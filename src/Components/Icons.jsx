@@ -67,29 +67,32 @@ export default class Icons extends React.Component {
         };
     }
 
-
-
     deleteNote = async () => {
-        await this.setState({ NoteId: this.props.noteId.id });
-
-        const apiDataToDeleteNote = {
-            isDeleted: this.state.delet,
-            noteIdList: [this.state.NoteId]
-        };
-
-        services
-            .deleteNote(apiDataToDeleteNote)
-            .then((json) => {
-                if (json.status === 200) {
-                    this.setState({
-                        SnackbarOpen: true, SnackbarMessage: 'note deleted Sucessfull !!',
-                    });
-                    this.props.refraceNote();
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        if(this.props.noteId === undefined)
+        {
+            alert('first create note !!!')
+        }
+        else{
+            await this.setState({ NoteId: this.props.noteId.id });
+            const apiDataToDeleteNote = {
+                isDeleted: this.state.delet,
+                noteIdList: [this.state.NoteId]
+            };
+            services
+                .deleteNote(apiDataToDeleteNote)
+                .then((json) => {
+                    if (json.status === 200) {
+                        this.setState({
+                            SnackbarOpen: true, SnackbarMessage: 'note deleted Sucessfull !!',
+                        });
+                        this.props.refraceNote();
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+       
     }
 
 
@@ -217,7 +220,7 @@ export default class Icons extends React.Component {
                                 <Grow
                                     {...TransitionProps}
                                     id="menu-list-grow"
-                                    style={{ transform: "translate3d(-60px, -10px, 0px)"}}
+                                    style={{ transform: "translate3d(-100px, -135px, 0px)"}}
                                 >
                                     <Paper>
                                         <ClickAwayListener onClickAway={this.handleColorMenuColse}>
@@ -275,7 +278,7 @@ export default class Icons extends React.Component {
                                 <Grow
                                     {...TransitionProps}
                                     id="menu-list-grow"
-                                    style={{  transform: "translate3d(-10px, -10px, 0px)"  }}
+                                    style={{  transform: "translate3d(-45px, -120px, 0px)"  }}
                                 >
                                     <Paper>
                                         <ClickAwayListener onClickAway={this.handleClose}>

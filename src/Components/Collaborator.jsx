@@ -32,7 +32,8 @@ export default class Collaborator extends React.Component {
             userId: '',
             Id: '',
             colaboraterDetails: [],
-            detail: ''
+            detail: '',
+            colaboraterOnCreateNote: []
 
         };
     }
@@ -72,21 +73,26 @@ export default class Collaborator extends React.Component {
             });
 
     }
-    addColaborater = () => {
-        
+    addColaborater = async() => {
 
-        if(this.props.Id === undefined){
 
-            const addColaboraterOnCreateNote = [{
+        if (this.props.Id === undefined) {
+            const colaboraterOnCreateNote = [...this.state.colaboraterOnCreateNote]
+            colaboraterOnCreateNote.push({
                 firstName: this.state.firstName,
                 lastName: this.state.lastName,
                 email: this.state.userInput,
                 userId: this.state.userId,
-            }];
-            this.props.addColoboratorOnCreateNote(addColaboraterOnCreateNote);
+            });
+            await this.setState({
+                colaboraterOnCreateNote: colaboraterOnCreateNote,
+                userInput:""
+            })
+
+            await this.props.addColoboratorOnCreateNote(this.state.colaboraterOnCreateNote);
 
         }
-        else{
+        else {
             const apiRequest = {
                 firstName: this.state.firstName,
                 lastName: this.state.lastName,
@@ -98,40 +104,29 @@ export default class Collaborator extends React.Component {
                 .colaboratesNote(apiRequest)
                 .then((data) => {
                     this.setState(prevState => ({
-                        colaboraterDetails: [...prevState.colaboraterDetails, JSON.parse(data.config.data)]
+                        colaboraterDetails: [...prevState.colaboraterDetails, JSON.parse(data.config.data)],
+                        userInput:""
                     }))
                 })
                 .catch((err) => {
                     console.log(err);
                 });
         }
-      
+
     }
 
-render() {
-    const myBest = this.state.filteredList.slice(0, 10);
-    return (
-        <div>
-            <div className="collaboraterContainer" >
-                <Dialog open={this.props.collabaroterState}
-                    onClose={this.handleCollaboraterClose}>
-                    <DialogTitle id="alert-dialog-slide-title">
-                        Collaborators
+    render() {
+        const myBest = this.state.filteredList.slice(0, 10);
+        return (
+            <div>
+                <div className="collaboraterContainer" >
+                    <Dialog open={this.props.collabaroterState}
+                        onClose={this.handleCollaboraterClose}>
+                        <DialogTitle id="alert-dialog-slide-title">
+                            Collaborators
                         </DialogTitle>
-                    <Divider light />
-                    <DialogContent>
-                        <div className="collaboratedEmail"  >
-                            <div className="personIcons">
-                                <IconButton edge="start" color="inherit" >
-                                    <PersonOutlineOutlinedIcon fontSize="small" color="inherit" />
-                                </IconButton>
-                            </div>
-                            <div className="displayTitle" >
-                                <span>amitkumar06111@gmail.com(owner)</span>
-                            </div>
-                        </div>
-
-                        {this.state.colaboraterDetails.map((row) => (
+                        <Divider light />
+                        <DialogContent>
                             <div className="collaboratedEmail"  >
                                 <div className="personIcons">
                                     <IconButton edge="start" color="inherit" >
@@ -139,70 +134,95 @@ render() {
                                     </IconButton>
                                 </div>
                                 <div className="displayTitle" >
-                                    {row.email}
+                                    <span>amitkumar06111@gmail.com(owner)</span>
                                 </div>
                             </div>
-                        ))}
 
-                        <div className="CollaboretarBody">
-                            <div className="personIcons">
-                                <IconButton edge="start" color="inherit" >
-                                    <PersonAddOutlinedIcon fontSize="small" color="inherit" />
-                                </IconButton>
-                            </div>
-                            <div className="searchemail">
-                                <div className="userInputId">
-                                    <InputBase
-                                        placeholder="person or email to share with"
-                                        fullWidth
-                                        type="text"
-                                        name="userInput"
-                                        value={this.state.userInput}
-                                        onChange={this.handelSearch}
-                                    />
+                            {this.state.colaboraterOnCreateNote.length > 0 ?
+                                this.state.colaboraterOnCreateNote.map((row) => (
+                                    <div className="collaboratedEmail"  >
+                                        <div className="personIcons">
+                                            <IconButton edge="start" color="inherit" >
+                                                <PersonOutlineOutlinedIcon fontSize="small" color="inherit" />
+                                            </IconButton>
+                                        </div>
+                                        <div className="displayTitle" >
+                                            {row.email}
+                                        </div>
+                                    </div>))
+                                :
+                                this.state.colaboraterDetails.map((row) => (
+                                    <div className="collaboratedEmail"  >
+                                        <div className="personIcons">
+                                            <IconButton edge="start" color="inherit" >
+                                                <PersonOutlineOutlinedIcon fontSize="small" color="inherit" />
+                                            </IconButton>
+                                        </div>
+                                        <div className="displayTitle" >
+                                            {row.email}
+                                        </div>
+                                    </div>
+                                ))}
+
+                            <div className="CollaboretarBody">
+                                <div className="personIcons">
+                                    <IconButton edge="start" color="inherit" >
+                                        <PersonAddOutlinedIcon fontSize="small" color="inherit" />
+                                    </IconButton>
                                 </div>
-                                <div className="AutoComplite">
-                                    <Paper>
-                                        <ClickAwayListener onClickAway={this.handleClose}>
-                                            <MenuList>
-                                                {myBest.map((row) => (
-                                                    <MenuItem onClick={() => this.handelClick(row)}>{row.email}</MenuItem>
-                                                ))}
-                                            </MenuList>
-                                        </ClickAwayListener >
-                                    </Paper>
+                                <div className="searchemail">
+                                    <div className="userInputId">
+                                        <InputBase
+                                            placeholder="person or email to share with"
+                                            fullWidth
+                                            type="text"
+                                            name="userInput"
+                                            value={this.state.userInput}
+                                            onChange={this.handelSearch}
+                                        />
+                                    </div>
+                                    <div className="AutoComplite">
+                                        <Paper>
+                                            <ClickAwayListener onClickAway={this.handleClose}>
+                                                <MenuList>
+                                                    {myBest.map((row) => (
+                                                        <MenuItem onClick={() => this.handelClick(row)}>{row.email}</MenuItem>
+                                                    ))}
+                                                </MenuList>
+                                            </ClickAwayListener >
+                                        </Paper>
+                                    </div>
+                                </div>
+                                <div className="check" onClick={this.addColaborater}>
+                                    <IconButton edge="start" color="inherit" >
+                                        <CheckOutlinedIcon fontSize="small" color="inherit" />
+                                    </IconButton>
                                 </div>
                             </div>
-                            <div className="check" onClick={this.addColaborater}>
-                                <IconButton edge="start" color="inherit" >
-                                    <CheckOutlinedIcon fontSize="small" color="inherit" />
-                                </IconButton>
-                            </div>
+
+
+
+
+
+                        </DialogContent>
+
+                        <div className="dilogAction">
+                            <DialogActions>
+                                <div className="cbtn">
+                                    <Button onClick={this.props.closeMethod}>
+                                        Cancel
+                                </Button>
+                                </div>
+                                <div className="cbtn1">
+                                    <Button onClick={this.props.closeMethod} >
+                                        Save
+                                </Button>
+                                </div>
+                            </DialogActions>
                         </div>
-
-
-
-
-
-                    </DialogContent>
-
-                    <div className="dilogAction">
-                        <DialogActions>
-                            <div className="cbtn">
-                                <Button onClick={this.props.closeMethod}>
-                                    Cancel
-                                </Button>
-                            </div>
-                            <div className="cbtn1">
-                                <Button onClick={this.props.closeMethod} >
-                                    Save
-                                </Button>
-                            </div>
-                        </DialogActions>
-                    </div>
-                </Dialog>
+                    </Dialog>
+                </div>
             </div>
-        </div>
-    );
-}
+        );
+    }
 }

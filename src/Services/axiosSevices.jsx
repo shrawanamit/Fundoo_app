@@ -7,12 +7,5 @@ export default class AxiosService{
 
     Get(url,isHeaderRequired){
         return axios.get(url,isHeaderRequired);
-    }
-    
-    Delete(url,data,isHeaderRequired){
-         return axios.post(url,data,isHeaderRequired);
-    }
-    Update(url,data,isHeaderRequired){
-        return axios.post(url,data,isHeaderRequired);
-   }
+    }  
 }

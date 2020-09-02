@@ -6,8 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import logo from "../assetes/AccountLogo.jpg";
-import CreateNote from './CreateNote.jsx';
-import DisplayNote from "./DisplayNote.jsx";
 import Logo from "../assetes/fundooLogo.png";
 import NoteOutlinedIcon from '@material-ui/icons/NoteOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
@@ -18,6 +16,13 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ArchiveIcon from '@material-ui/icons/Archive';
+import Link from '@material-ui/core/Link';
+import { BrowserRouter as Router ,Route, Redirect } from 'react-router-dom';
+import Notes from "./Notes.jsx";
+import Logout from "./Logout.jsx";
+import Reminders from './Reminders.jsx';
+import Archive from "./Archive.jsx";
+import Delete from "./Delete.jsx";
 
 export default class DashBord extends React.Component {
 
@@ -68,11 +73,11 @@ export default class DashBord extends React.Component {
                             </div>
 
                         </div>
-                        <div className="icon3"></div>
+                        <div className="icon3">
+                            
+                        </div>
                         <div className="icon2">
-                            <div className="account">
-                                <img src={logo} class="logoImage" alt="pinTask" />
-                            </div>
+                            <Logout />
                         </div>
                     </div>
                 </div>
@@ -81,52 +86,63 @@ export default class DashBord extends React.Component {
                         <div className={this.state.open ? "sideNav1" : "sideNav"} >
                             <List aria-label="menu" edge="start">
                                 <div className="note">
-                                    <ListItem button>
+                                <Link href="/home/notes" variant="body2" className="link">
+                                    <ListItem button autoFocus>
                                         <ListItemIcon>
                                             <NoteOutlinedIcon />
                                         </ListItemIcon>
                                         <ListItemText primary="Notes" />
                                     </ListItem>
+                                    </Link>
                                 </div>
                                 <div className="note">
+                                <Link href="/home/reminders" variant="body2">
                                     <ListItem button>
                                         <ListItemIcon>
                                             <NotificationsNoneOutlinedIcon />
                                         </ListItemIcon>
                                         <ListItemText primary="Remainder" />
                                     </ListItem>
+                                    </Link>
                                 </div>
                                 <div className="note">
+                                <Link href="/home" variant="body2">
                                     <ListItem button>
                                         <ListItemIcon>
                                             <EditOutlinedIcon />
                                         </ListItemIcon>
                                         <ListItemText primary="Edit Labels" />
                                     </ListItem>
+                                    </Link>
                                 </div>
                                 <div className="note">
+                                <Link href="/home/archive" variant="body2">
                                     <ListItem button>
                                         <ListItemIcon>
                                             < ArchiveIcon />
                                         </ListItemIcon>
                                         <ListItemText primary="Archive" />
+                                        
                                     </ListItem>
+                                    </Link>
                                 </div>
                                 <div className="note">
+                                <Link href="/home/trash" variant="body2">
                                     <ListItem button>
                                         <ListItemIcon >
                                             < DeleteOutlineOutlinedIcon />
                                         </ListItemIcon>
                                         <ListItemText primary="Trash" />
                                     </ListItem>
+                                    </Link>
                                 </div>
                             </List>
                         </div>
                     </div>
-                    <div className="mainBody">
-                        <CreateNote />
-                        <DisplayNote />
-                    </div>
+                    <Route  path="/home/notes" component={Notes} />
+                    <Route  path="/home/reminders" component={Reminders} />
+                    <Route  path="/home/archive" component={Archive} />
+                    <Route  path="/home/trash" component={Delete} />
                 </div>
             </div>
 
