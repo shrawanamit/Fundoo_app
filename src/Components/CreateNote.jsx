@@ -16,17 +16,12 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CloseIcon from '@material-ui/icons/Close';
 import Checkbox from '@material-ui/core/Checkbox';
 import Collaborator from './Collaborator';
+//  import { connect } from 'react-redux';
+// import { displayNote } from '../redux/index'
 
 
 let services = new NoteService();
-
-// const validateForm = errors => {
-//     let valid = true;
-//     Object.values(errors).forEach(val => val.length > 0 && (valid = false));
-//     return valid;
-// };
-
-export default class CreateNote extends React.Component {
+class CreateNote extends React.Component {
 
     constructor(props) {
         super(props);
@@ -173,6 +168,7 @@ export default class CreateNote extends React.Component {
                 .CreateNote(data)
                 .then((json) => {
                     if (json.status === 200) {
+                        // {this.props.allNotes}
                         this.setState({
                             SnackbarOpen: true,
                             SnackbarMessage: 'note created Sucessfull !!',
@@ -385,3 +381,15 @@ export default class CreateNote extends React.Component {
         );
     }
 }
+// const mapStateToProps = state =>{
+//     return{
+//         getAllNote : [...state.allNotes]
+//     };
+    
+// }
+// const mapDispatchToProps = dispatch =>{
+//     return{
+//         displayNote : (data) => dispatch(displayNote(data))
+//     }
+// }connect(mapStateToProps,mapDispatchToProps)
+export default (CreateNote)

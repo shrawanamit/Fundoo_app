@@ -8,10 +8,13 @@ import DashBord from './Components/DashBoard';
 import Notes from './Components/Notes';
 import Demo from './Components/Demo';
 import {protectedRoute} from './Components/protected.route';
+import { Provider } from 'react-redux';
+import store from './redux/Store/store'
 
 
 function App() {
   return (
+    <Provider store={ store }>
     <div>
       <Router>
         <Route exact path="/" component={Registration} />
@@ -20,10 +23,9 @@ function App() {
         <Route exact path="/resetpassword/:token" component={ResetPassword} />
         <Route  path="/home" component={DashBord} />
         <Route  path="/demo" component={Demo} />
-        
-       
       </Router>
     </div>
+     </Provider>
   );
 }
 

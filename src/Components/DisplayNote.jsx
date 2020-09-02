@@ -15,12 +15,14 @@ import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined';
 import Config from "../Configuration/config";
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import AddIcon from '@material-ui/icons/Add';
+import { connect } from 'react-redux';
+import { displayNote } from '../redux/Action/Action'
 
 let services = new NoteService();
 const baseURl = Config.imageBaseURl;
 
 
-export default class DisplayNote extends React.Component {
+class DisplayNote extends React.Component {
 
     constructor(props) {
         super(props);
@@ -147,9 +149,9 @@ export default class DisplayNote extends React.Component {
 
     getAllNote = () => {
         services.getAllNotes().then((data) => {
-            this.setState({ allNotes: data.data.data.data.filter(user => user.isDeleted === false) });
-
-            console.log("allNotes Array", this.state.allNotes);
+            // this.setState({ allNotes: data.data.data.data.filter(user => user.isDeleted === false) });
+                     this.props.displayNote(data.data.data.data.filter(user => user.isDeleted === false));
+             console.log("allNotes Array", data.data.data.data);
         }).catch((err) => {
             console.log(err);
         })
@@ -171,7 +173,7 @@ export default class DisplayNote extends React.Component {
                             color="inherit" onClick={this.SnackbarClose}>x</IconButton>
                     ]}
                 />
-                {this.state.allNotes.reverse().map((row) => (
+                {this.props.getAllNote.reverse().map((row) => (
                     <div className="getNotes" style={{ backgroundColor: "row.color" }}>
                         <div className="pin">
                             <img src={pintask} class="pinImage" alt="pinTask" />
@@ -322,3 +324,15 @@ export default class DisplayNote extends React.Component {
         );
     }
 }
+const mapStateToProps = state =>{
+    return{
+        getAllNote : [...state.allNotes]
+    };
+    
+}
+const mapDispatchToProps = dispatch =>{
+    return{
+        displayNote : (data) => dispatch(displayNote(data))
+    }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(DisplayNote)
