@@ -1,1 +1,2 @@
 export const DISPLAY_NOTE ='DISPLAY_NOTE';
+export const UPDATE_NOTE ='UPDATE_NOTE';

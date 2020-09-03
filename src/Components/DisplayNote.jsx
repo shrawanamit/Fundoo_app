@@ -40,10 +40,10 @@ class DisplayNote extends React.Component {
             imageUrl: '',
             newImageUrl: '',
             inputItemValue: '',
-            checkListId:'',
-            notesId:'',
-            status:'',
-            itemName:'',
+            checkListId: '',
+            notesId: '',
+            status: '',
+            itemName: '',
         };
     }
 
@@ -62,41 +62,32 @@ class DisplayNote extends React.Component {
         });
         console.log("======note check list===========", cardObject.noteCheckLists);
     };
-    // handleCheckList = (checkListObject) => {
-    //     this.setState({
-    //         checkListId: checkListObject.id,
-    //         itemName: checkListObject.itemName,
-    //         notesId: checkListObject.notesId,
-    //         status: checkListObject.status,
 
-    //     });
-    // }
+    updateList = (object, index) => {
+        console.log("value ", object, "index", index);
+        const noteCheckLists = [...this.state.noteCheckLists];
+        if (object.status === 'open') {
+            object.status = 'close';
+            noteCheckLists[index].status = 'close';
+            this.setState({
+                noteCheckLists: noteCheckLists,
+            })
+        }
+        else {
+            object.status = 'open';
+            noteCheckLists[index].status = 'open';
+            this.setState({
+                noteCheckLists: noteCheckLists,
+            })
+        }
 
-    updateList = (object,index) => {
-       console.log("value ",object,"index",index);
-       const noteCheckLists= [...this.state.noteCheckLists];
-       if(object.status === 'open'){
-           object.status='close';
-           noteCheckLists[index].status='close';
-           this.setState({
-               noteCheckLists:noteCheckLists,
-           })
-       }
-       else{
-        object.status = 'open';
-        noteCheckLists[index].status='open';
-           this.setState({
-               noteCheckLists:noteCheckLists,
-           })
-       }
 
-        
         const apiRequestData = {
-            checklistId:object.id,
+            checklistId: object.id,
             itemName: object.itemName,
-            isDeleted:false,
+            isDeleted: false,
             notesId: object.notesId,
-            status:object.status,
+            status: object.status,
         };
         services
             .updateList(apiRequestData)
@@ -142,20 +133,7 @@ class DisplayNote extends React.Component {
     SnackbarClose = (event) => {
         this.setState({ SnackbarOpen: false });
     }
-    //for fetching  notes from database
-    componentDidMount() {
-        this.getAllNote();
-    }
-
-    getAllNote = () => {
-        services.getAllNotes().then((data) => {
-            // this.setState({ allNotes: data.data.data.data.filter(user => user.isDeleted === false) });
-                     this.props.displayNote(data.data.data.data.filter(user => user.isDeleted === false));
-             console.log("allNotes Array", data.data.data.data);
-        }).catch((err) => {
-            console.log(err);
-        })
-    }
+   
 
 
 
@@ -173,8 +151,8 @@ class DisplayNote extends React.Component {
                             color="inherit" onClick={this.SnackbarClose}>x</IconButton>
                     ]}
                 />
-                {this.props.getAllNote.reverse().map((row) => (
-                    <div className="getNotes" style={{ backgroundColor: "row.color" }}>
+                {this.props.getAllNote.reverse().filter(value => value.isDeleted === false).map((row) => (
+                    <div className="getNotes" style={{ backgroundColor: row.color }}>
                         <div className="pin">
                             <img src={pintask} class="pinImage" alt="pinTask" />
                         </div>
@@ -267,9 +245,9 @@ class DisplayNote extends React.Component {
                                         />
                                     </div> :
                                     <div>
-                                        {this.state.noteCheckLists.filter((value) => value.status === 'open').map((object,index) => (
+                                        {this.state.noteCheckLists.filter((value) => value.status === 'open').map((object, index) => (
                                             <div className="discreptionHidden">
-                                                <CheckBoxOutlineBlankIcon fontSize="small" color="inherit" style={{ opacity: 0.71 }} onClick={()=>this.updateList(object,index)}/>
+                                                <CheckBoxOutlineBlankIcon fontSize="small" color="inherit" style={{ opacity: 0.71 }} onClick={() => this.updateList(object, index)} />
                                                 <div className="listContener">
                                                     <InputBase
                                                         fullWidth
@@ -282,9 +260,9 @@ class DisplayNote extends React.Component {
                                             </div>
                                         ))}
                                         <Divider />
-                                        {this.state.noteCheckLists.filter((value) => value.status === 'close').map((object,index) => (
+                                        {this.state.noteCheckLists.filter((value) => value.status === 'close').map((object, index) => (
                                             <div className="discreptionHidden">
-                                                <CheckBoxOutlinedIcon fontSize="small" color="inherit" style={{ opacity: 0.71, cursor: 'pointer' }} onClick={()=>this.updateList(object,index)}/>
+                                                <CheckBoxOutlinedIcon fontSize="small" color="inherit" style={{ opacity: 0.71, cursor: 'pointer' }} onClick={() => this.updateList(object, index)} />
                                                 <div className="listContenercheked" >
                                                     <InputBase
                                                         fullWidth
@@ -324,15 +302,11 @@ class DisplayNote extends React.Component {
         );
     }
 }
-const mapStateToProps = state =>{
-    return{
-        getAllNote : [...state.allNotes]
+const mapStateToProps = state => {
+    return {
+        getAllNote: [...state.allNotes]
     };
-    
+
 }
-const mapDispatchToProps = dispatch =>{
-    return{
-        displayNote : (data) => dispatch(displayNote(data))
-    }
-}
-export default connect(mapStateToProps,mapDispatchToProps)(DisplayNote)
+
+export default connect(mapStateToProps)(DisplayNote)

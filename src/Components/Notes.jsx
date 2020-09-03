@@ -1,7 +1,12 @@
 import React from 'react';
 import CreateNote from './CreateNote.jsx';
 import DisplayNote from "./DisplayNote.jsx";
-export default class Notes extends React.Component {
+import { connect } from 'react-redux';
+import { displayNote } from '../redux/Action/Action';
+import NoteService from "../Services/NoteService";
+
+let services = new NoteService();
+class Notes extends React.Component {
 
     constructor(props) {
         super(props);
@@ -10,12 +15,38 @@ export default class Notes extends React.Component {
         };
     }
 
+    componentDidMount() {
+        this.getAllNote();
+    }
+
+    getAllNote = () => {
+        services.getAllNotes().then((data) => {
+            //calling redux action creater
+            this.props.displayNote(data.data.data.data);
+            console.log("allNotes Array", data.data.data.data);
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
+
     render() {
         return (
             <div className="mainBody">
-                <CreateNote />
+                <CreateNote  getAllNote={this.getAllNote}/>
                 <DisplayNote />
             </div>
         );
     }
 }
+const mapStateToProps = state => {
+    return {
+        getAllNote: [...state.allNotes]
+    };
+
+}
+const mapDispatchToProps = dispatch => {
+    return {
+        displayNote: (data) => dispatch(displayNote(data))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Notes)

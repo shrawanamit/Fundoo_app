@@ -1,6 +1,5 @@
-import { DISPLAY_NOTE } from '../Action/ActionType';
-import NoteService from "../../Services/NoteService";
-let services = new NoteService();
+import { DISPLAY_NOTE ,UPDATE_NOTE} from '../Action/ActionType';
+
 const initialState = {
     allNotes: []
 }
