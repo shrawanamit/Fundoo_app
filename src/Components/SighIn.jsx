@@ -7,12 +7,12 @@ import Link from '@material-ui/core/Link';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import FundooService from "../Services/userService";
-import NoteService from '../Services/NoteService';
 import auth from "./Auth";
-let service = new FundooService();
-let serviceNote= new NoteService();
 
-const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
+let service = new FundooService();
+
+
+const validEmailRegex = RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 const validateForm = (errors) => {
     let valid = true;
     Object.values(errors).forEach(
@@ -90,7 +90,7 @@ export default class Registration extends React.Component {
            
           }; 
 
-          service. Login(user)
+          service.Login(user)
             .then((json) => {
               console.log("responce data==>", json.data.id);
               //taking token Id of user

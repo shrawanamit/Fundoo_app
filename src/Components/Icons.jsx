@@ -8,7 +8,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import ColorLensOutlinedIcon from '@material-ui/icons/ColorLensOutlined';
-import ImageOutlinedIcon from '@material-ui/icons/ImageOutlined';
 import ArchiveIcon from '@material-ui/icons/Archive';
 import MoreVertOutlinedIcon from '@material-ui/icons/MoreVertOutlined';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
@@ -17,20 +16,11 @@ import Snackbar from '@material-ui/core/Snackbar';
 import NoteService from "../Services/NoteService";
 import Tooltip from '@material-ui/core/Tooltip';
 import Collaborater from "./Collaborator.jsx";
-import AddColor from "./AddColor.jsx";
 import Image from "./Image.jsx"
-import { withStyles } from '@material-ui/core/styles';
+
 let services = new NoteService();
 
 
-const styles = theme => ({
-    root: {
-        display: 'flex',
-    },
-    paper: {
-        marginRight: theme.spacing.unit * 2,
-    },
-});
 
 export default class Icons extends React.Component {
 
@@ -242,7 +232,7 @@ export default class Icons extends React.Component {
                     </div>
 
                     <div className="iconf">
-                        <Image noteData={this.props.noteId} addImageOncreateNote={this.props.addImageOncreateNote}/>
+                        <Image noteData={this.props.noteId} addImageOncreateNote={this.props.addImageOncreateNote} refraceNote={this.props.refraceNote}/>
                     </div>
 
 
@@ -294,7 +284,7 @@ export default class Icons extends React.Component {
                         </Popper>
                     </div>
                 </div >
-                <Collaborater collabaroterState={this.state.collaboraterHandel} Id={this.props.noteId} closeMethod={this.handleCollaboraterClose}  addColoboratorOnCreateNote={this.props.addColoboratorOnCreateNote}/>
+                <Collaborater collabaroterState={this.state.collaboraterHandel} Id={this.props.noteId} closeMethod={this.handleCollaboraterClose}  addColoboratorOnCreateNote={this.props.addColoboratorOnCreateNote} updateNote={this.props.refraceNote}/>
             </React.Fragment>
 
         );

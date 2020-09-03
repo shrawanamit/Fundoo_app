@@ -9,17 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import FundooService from "../Services/userService";
 let service = new FundooService();
 
-const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
-
-const  validateForm = (errors) => {
-    let valid = true;
-    Object.values(errors).forEach(
-        (val) => val.length > 0 && (valid = false)
-    );
-    return valid;
-}
-
-
+const validEmailRegex = RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 
 export default class Registration extends React.Component {
 
@@ -120,7 +110,7 @@ export default class Registration extends React.Component {
             password: this.state.password,
             service: "advance"
         };
-        if( this.state.password == this.state.confirmPassword)
+        if( this.state.password === this.state.confirmPassword)
         {
             service.Registration(user)
             .then((json) => {

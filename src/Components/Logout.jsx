@@ -1,15 +1,14 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import "../SCSS/logout.scss";
 import logo from "../assetes/AccountLogo.jpg";
 import auth from "./Auth";
 import CameraAltOutlinedIcon from '@material-ui/icons/CameraAltOutlined';
 import IconButton from '@material-ui/core/IconButton';
-import { browserHistory } from 'react-router';
+import { withRouter } from "react-router";
 
-export default class Logout extends React.Component {
+ class Logout extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -28,7 +27,7 @@ export default class Logout extends React.Component {
     };
     handelLogOut = () => {
         auth.logout(() => {
-            this.props.history.push("/");
+            this.props.history.push("/Signin");
         })
     }
     addImage=(e)=> {
@@ -65,7 +64,7 @@ export default class Logout extends React.Component {
                     style={{ transform: "translate3d(-20px, 40px, 0px)" }}>
                     <div className="logout">
                         <div className="accountimage">
-                            <img src={this.state.imageUrl?this.state.imageUrl:logo} class="displayAccountImage" />
+                            <img src={this.state.imageUrl?this.state.imageUrl:logo} class="displayAccountImage" alt="imag" />
                             <div className="camera">
                                 <IconButton edge="start" color="inherit" aria-label="menu">
                                     <input type="file" id="BtnBrowseHidden" name="file" className="image" accept="image/*" onChange={this.addImage} />
@@ -92,3 +91,4 @@ export default class Logout extends React.Component {
         );
     }
 }
+export default withRouter(Logout)

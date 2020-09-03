@@ -36,7 +36,8 @@ export default class Image extends React.Component {
             services
                 .updateNote(data)
                 .then(res => {
-                    console.log("=====", res)
+                    console.log("=====", res);
+                    this.props.refraceNote();
                 })
                 .catch((err) => {
                     console.log(err);

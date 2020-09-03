@@ -68,10 +68,7 @@
     border: 1px solid grey;
     border-radius: 8px;
 }
-.iconPart2{
-    padding-right: 16px;
-    padding-top: 8px;
-}
+
 .noteIcon{
     opacity: 0.71;
 }
@@ -119,7 +116,8 @@
  height:244px;
 }
 .iconsBody {
-    padding: 4px 16px 8px 16px;
+  height:35px ;
+   width: 99%;
 }
 
 @media only screen and (max-width: 500px) {

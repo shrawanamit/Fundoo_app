@@ -1,16 +1,13 @@
 import React from 'react';
-import { BrowserRouter as Router,Link ,Route } from 'react-router-dom';
+import { BrowserRouter as Router,Route } from 'react-router-dom';
 import Registration from './Components/Registration';
 import ForgotPassword from './Components/ForgotPassword';
 import ResetPassword from './Components/ResetPassword';
 import SighIn from './Components/SighIn';
 import DashBord from './Components/DashBoard';
-import Notes from './Components/Notes';
 import Demo from './Components/Demo';
-import {protectedRoute} from './Components/protected.route';
 import { Provider } from 'react-redux';
 import store from './redux/Store/store'
-
 
 function App() {
   return (

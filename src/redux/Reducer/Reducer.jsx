@@ -1,4 +1,4 @@
-import { DISPLAY_NOTE ,UPDATE_NOTE} from '../Action/ActionType';
+import { DISPLAY_NOTE } from '../Action/ActionType';
 
 const initialState = {
     allNotes: []

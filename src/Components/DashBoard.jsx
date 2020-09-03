@@ -5,7 +5,6 @@ import MenuOutlinedIcon from '@material-ui/icons/MenuOutlined';
 import Typography from '@material-ui/core/Typography';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
-import logo from "../assetes/AccountLogo.jpg";
 import Logo from "../assetes/fundooLogo.png";
 import NoteOutlinedIcon from '@material-ui/icons/NoteOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
@@ -17,7 +16,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ArchiveIcon from '@material-ui/icons/Archive';
 import Link from '@material-ui/core/Link';
-import { BrowserRouter as Router ,Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router,Route } from 'react-router-dom';
 import Notes from "./Notes.jsx";
 import Logout from "./Logout.jsx";
 import Reminders from './Reminders.jsx';
@@ -47,7 +46,7 @@ export default class DashBord extends React.Component {
                                     <MenuOutlinedIcon />
                                 </IconButton>
                             </div>
-                            <div className="heading" >
+                            <div class="heading" >
                                 <img src={Logo} class="Logo" alt="Logo" />
                                 <Typography variant="h6" >
                                     Fundoo

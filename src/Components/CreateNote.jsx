@@ -14,10 +14,7 @@ import Divider from '@material-ui/core/Divider';
 import AddIcon from '@material-ui/icons/Add';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CloseIcon from '@material-ui/icons/Close';
-import Checkbox from '@material-ui/core/Checkbox';
-import Collaborator from './Collaborator';
 import { connect } from 'react-redux';
-// import { displayNote } from '../redux/index'
 
 
 let services = new NoteService();
@@ -25,7 +22,6 @@ class CreateNote extends React.Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             title: "",
             description: "",
@@ -178,10 +174,10 @@ class CreateNote extends React.Component {
                             description:"",
                             collaboraterData: [],
                         });
-                        this.props.getAllNote();
+                       
                     }
-                    console.log("data", json);
-                    this.state.displayAllNote();
+                    console.log("data", this.props);
+                    this.props.updateNote();    
                 })
                 .catch((err) => {
                     console.log(err);
@@ -192,7 +188,7 @@ class CreateNote extends React.Component {
 
 
     render() {
-        const { errors } = this.state;
+        
         return (
             <div className="createNote">
                 <Snackbar
@@ -244,7 +240,8 @@ class CreateNote extends React.Component {
                         <div className="noteBody" style={{ backgroundColor: this.state.colorCode }}>
 
                             <div className="addImage">
-                                <img src={this.state.url} className="imagedisplay" />
+                                <img src={this.state.url} className="imagedisplay" alt="add
+                                " />
                             </div>
                             <div className="title">
                                 <InputBase

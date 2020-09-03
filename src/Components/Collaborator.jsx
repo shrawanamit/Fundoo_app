@@ -12,10 +12,9 @@ import NoteService from "../Services/NoteService";
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
-import ClearOutlinedIcon from '@material-ui/icons/ClearOutlined';
+
 let services = new NoteService();
 
 
@@ -37,11 +36,6 @@ export default class Collaborator extends React.Component {
 
         };
     }
-
-
-
-
-
     handelClick = (arrarObject) => {
         this.setState({
             open: !this.state.open,
@@ -74,8 +68,6 @@ export default class Collaborator extends React.Component {
 
     }
     addColaborater = async() => {
-
-
         if (this.props.Id === undefined) {
             const colaboraterOnCreateNote = [...this.state.colaboraterOnCreateNote]
             colaboraterOnCreateNote.push({
@@ -107,6 +99,7 @@ export default class Collaborator extends React.Component {
                         colaboraterDetails: [...prevState.colaboraterDetails, JSON.parse(data.config.data)],
                         userInput:""
                     }))
+                    this.props.updateNote();
                 })
                 .catch((err) => {
                     console.log(err);
@@ -183,13 +176,13 @@ export default class Collaborator extends React.Component {
                                     </div>
                                     <div className="AutoComplite">
                                         <Paper>
-                                            <ClickAwayListener onClickAway={this.handleClose}>
+                                            {/* <ClickAwayListener onClickAway={this.handleClose}> */}
                                                 <MenuList>
                                                     {myBest.map((row) => (
                                                         <MenuItem onClick={() => this.handelClick(row)}>{row.email}</MenuItem>
                                                     ))}
                                                 </MenuList>
-                                            </ClickAwayListener >
+                                            {/* </ClickAwayListener > */}
                                         </Paper>
                                     </div>
                                 </div>

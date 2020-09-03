@@ -10,13 +10,10 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import Divider from '@material-ui/core/Divider';
 import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined';
 import Config from "../Configuration/config";
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
-import AddIcon from '@material-ui/icons/Add';
 import { connect } from 'react-redux';
-import { displayNote } from '../redux/Action/Action'
 
 let services = new NoteService();
 const baseURl = Config.imageBaseURl;
@@ -60,7 +57,7 @@ class DisplayNote extends React.Component {
             collaborators: cardObject.collaborators,
             imageUrl: cardObject.imageUrl,
         });
-        console.log("======note check list===========", cardObject.noteCheckLists);
+        console.log("==note check list=",cardObject.color);
     };
 
     updateList = (object, index) => {
@@ -122,7 +119,7 @@ class DisplayNote extends React.Component {
                     this.setState({
                         SnackbarOpen: true, SnackbarMessage: 'note update Sucessfull !!', open: false,
                     });
-                    this.getAllNote();
+                    this.props.refraceNote();
                 }
             })
             .catch((err) => {
@@ -158,11 +155,11 @@ class DisplayNote extends React.Component {
                         </div>
                         {row.imageUrl.includes("client") ?
                             <div className="displayImageContener">
-                                <img src={baseURl + row.imageUrl.replace("client", "")} alt="uploaded image" className="displayImage" />
+                                <img src={baseURl + row.imageUrl.replace("client", "")} alt="uploaded" className="displayImage" />
 
                             </div> :
                             <div className="displayImageContener">
-                                <img src={baseURl + '/' + row.imageUrl} className="displayImage" />
+                                <img src={baseURl + '/' + row.imageUrl} className="displayImage" alt="upload"/>
 
                             </div>
                         }
@@ -204,20 +201,20 @@ class DisplayNote extends React.Component {
 
                         </div>
                         <div className="getIcons">
-                            <Icons noteId={row} refraceNote={this.getAllNote} />
+                            <Icons noteId={row} refraceNote={this.props.refraceNote} />
                         </div>
 
                     </div >
                 ))}
 
-                <div className="dilogBox" style={{ backgroundColor: this.state.noteColor }}>
+                <div className="dilogBox" >
                     <Dialog open={this.state.open}
                         onClose={this.handleClose} >
                         <DialogContent>
-                            <div className="dilogBody">
+                            <div className="dilogBody" style={{ background: this.state.noteColor }}>
                                 {this.state.imageUrl.includes("client") ?
                                     <div className="displayImageUpdate">
-                                        <img src={baseURl + this.state.imageUrl.replace("client", "")} alt="uploaded image" className="updatedisplayImage" />
+                                        <img src={baseURl + this.state.imageUrl.replace("client", "")} alt="uploaded" className="updatedisplayImage" />
                                         <div className="deleteIcon">
                                             <DeleteOutlineIcon />
                                         </div>
@@ -259,7 +256,7 @@ class DisplayNote extends React.Component {
                                                 </div>
                                             </div>
                                         ))}
-                                        <Divider />
+                                       
                                         {this.state.noteCheckLists.filter((value) => value.status === 'close').map((object, index) => (
                                             <div className="discreptionHidden">
                                                 <CheckBoxOutlinedIcon fontSize="small" color="inherit" style={{ opacity: 0.71, cursor: 'pointer' }} onClick={() => this.updateList(object, index)} />

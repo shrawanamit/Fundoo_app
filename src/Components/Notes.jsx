@@ -22,6 +22,7 @@ class Notes extends React.Component {
     getAllNote = () => {
         services.getAllNotes().then((data) => {
             //calling redux action creater
+            console.log("props",this.props);
             this.props.displayNote(data.data.data.data);
             console.log("allNotes Array", data.data.data.data);
         }).catch((err) => {
@@ -31,22 +32,17 @@ class Notes extends React.Component {
 
     render() {
         return (
-            <div className="mainBody">
-                <CreateNote  getAllNote={this.getAllNote}/>
-                <DisplayNote />
+            <div className="mainBody"> 
+                <CreateNote  updateNote={this.getAllNote}/>
+                <DisplayNote refraceNote={this.getAllNote}/>
             </div>
         );
     }
 }
-const mapStateToProps = state => {
-    return {
-        getAllNote: [...state.allNotes]
-    };
 
-}
 const mapDispatchToProps = dispatch => {
     return {
         displayNote: (data) => dispatch(displayNote(data))
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Notes)
+export default connect(null, mapDispatchToProps)(Notes)

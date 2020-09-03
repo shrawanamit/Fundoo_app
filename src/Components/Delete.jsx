@@ -1,5 +1,5 @@
 import React from 'react';
-import DisplayNote from "./DisplayNote.jsx";
+import  DisplayNote  from "./DisplayNote.jsx";
 import "../SCSS/trash.scss"
 export default class Delete extends React.Component {
 
